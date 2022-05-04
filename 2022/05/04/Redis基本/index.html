@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Redis基本 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="redis Redis启动：.&#x2F;bin&#x2F;redis-server  .&#x2F;redis.conf Redis客户端连接：redis-cli -h ip地址 -p 端口号 Redis关闭：.&#x2F;bin&#x2F;redis-cli shutdown">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis基本">
+<meta property="og:url" content="http://example.com/2022/05/04/Redis%E5%9F%BA%E6%9C%AC/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="redis Redis启动：.&#x2F;bin&#x2F;redis-server  .&#x2F;redis.conf Redis客户端连接：redis-cli -h ip地址 -p 端口号 Redis关闭：.&#x2F;bin&#x2F;redis-cli shutdown">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/797e9cead50af35a88779ccd0b52bc11.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/4e1158d93ad44c7d2f768e7093db201c.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/96d83e43a9bd3048b133f0ecd119abfe.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/cd5ef05886f987bf1919ba2fde507870.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/959822b79dd506f2267dfe9c6856b731.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/cd49411fed9cdbdfd065247f84f7f0f3.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/d36e2db4e85d2d43fc4ee427d6090ba4.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/7030a3a02ee4b674629a96c64858e905.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/a9af8ff1f7117920b0f255c4ed8cac6d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/9e76efc91d35da5a5783c5ac874dde59.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/dc87f3eb8fde7a5f1c9f5eb975675085.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/30c6152b7045e45df3718564253bebcb.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/ee1d5cd5916a946357cea1fe88a48595.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/226ac13aa4a593f08816c1dd7e603ee8.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/4e86fb2d07560ea22aae7c133c0fcdf9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/8c2e289b70a09fec16f26346745e2bd4.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/53b9357a2bc3cb7ba1ce97eff35ca0b5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/4771ac35ed74a0351d88bfe7fc5deb5a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/966116309076f0f67cd1f1ca731c6499.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/cfb09c69c8016435e9bb21b4dbd795f0.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/6a9ae0954590a82144dd59086eb60d0f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/58c0ff91d9462559c9a3242a5d09db7f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/b8d2194dca22e4b9905fbf7c5d1cfb29.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/2211febd182ab9db14ec1191a90f1b0d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/19f7ba8d740b74f101fd38d5dea6bf0f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/aa83ce0974c2001146458cd0e906c4fe.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/aa4e72e409744c1c45d723e18b5ae065.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/9d179eedef4968c1cc52dd780ec7455b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/8ad9ec3d8fb94a4e653d59c5706da82e.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/928276b93c049def3f3d38059a911792.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/55da107cb5bb801a81931ff4e1c83921.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/a22e0ecb628d2d48d7e4ffb02185b574.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/35e2f9da86b5a0444740e8105be9f128.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/43a77fba21235d380bb4186ef56b25ef.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/8eb01029cf27894629a39e1896d78efb.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/495e1f395e5bd68235737df1d66ac869.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/ef81602e24832898f421c08e1095f5eb.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/c70a6eb399c28cf677be58d26a441e09.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/b11f247dfcf325f13406b936ac8facac.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/6e5f9caaabe1b9488ea77d7c87853cdc.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/857b06cd5efff3969fde947954f0d02d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/c22422ba2b9c1fa5cc7657cb642b4a3d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/5fd7fecd8b6d9fe48077fb9e3d5ae95b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/a355aad8014b738f8cf7a5b473675777.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/e45af8318c236b670a289e8bf759e690.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/425b59de4ffcc4ab1c5c116854c5559f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/17845d12a43edbb9d93a42de49558292.png">
+<meta property="article:published_time" content="2022-05-04T14:55:40.158Z">
+<meta property="article:modified_time" content="2022-05-04T14:56:50.690Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/797e9cead50af35a88779ccd0b52bc11.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Redis基本" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/04/Redis%E5%9F%BA%E6%9C%AC/" class="article-date">
+  <time class="dt-published" datetime="2022-05-04T14:55:40.158Z" itemprop="datePublished">2022-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Redis基本
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><code>redis</code></p>
+<p>Redis启动：.&#x2F;bin&#x2F;redis-server  .&#x2F;redis.conf</p>
+<p>Redis客户端连接：redis-cli -h ip地址 -p 端口号</p>
+<p>Redis关闭：.&#x2F;bin&#x2F;redis-cli shutdown</p>
+<span id="more"></span>
+<p><strong>1.String类型</strong></p>
+<p>redis自身是一个Map，其中所有的数据类型都是采用key-value形式存储。</p>
+<p>数据类型指的是存储的数据类型，就是value的类型。key部分类型永远是字符串。</p>
+<p>存储的数据：单个数据，最简单的数据存储类型，也是最常用的数据存储类型。</p>
+<p>存储数据的格式：一个存储空间保存一个数据。</p>
+<p>存储内容：通常使用字符串，如果字符串以整数的形式展示，可以作为数字操作使用。</p>
+<ul>
+<li>添加&#x2F;修改数据  set key value</li>
+<li>获取数据  get key</li>
+<li>删除数据  del key</li>
+<li>添加多个数据  mset key1 value1 key2 value2 …</li>
+<li>获取多个数据  mget key1 key2 …</li>
+<li>获取数据字符的个数  strlen key</li>
+<li>追加信息到原始信息后面(如果原始信息存在就追加，否则新建)  append key value</li>
+</ul>
+<p>设置数值数据增加指定范围的值</p>
+<ul>
+<li>incr key</li>
+<li>incrby key increment</li>
+<li>incrbyfloat key increment</li>
+</ul>
+<p>设置数值数据减少指定范围的值</p>
+<ul>
+<li>decr key</li>
+<li>decrby key increment</li>
+</ul>
+<p>string在redis内部存储默认就是一个字符串，当遇到增减类操作incr，decr时会转换成数值型进行计算</p>
+<p>redis所有的操作都是原子性的，采用单线程处理所有业务，命令是一个一个执行，因此无需考虑并发带来的数据影响。</p>
+<p>设置数据具有指定的生命周期</p>
+<ul>
+<li>为指定的key设置过期时间(如果key已经存在，value会替换掉旧值)  setex key seconds value</li>
+<li>psetex key milliseconds value</li>
+</ul>
+<p>数据未获取到 nil 等同于null</p>
+<p>数据的最大存储量 512MB</p>
+<p><strong>2.hash类型</strong></p>
+<p>对一系列存储的数据进行编组，方便管理，典型应用存储对象信息</p>
+<p>一个存储空间保存多个键值对数据</p>
+<p>hash类型：底层使用<strong>哈希表</strong>结构实现数据存储</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/797e9cead50af35a88779ccd0b52bc11.png" alt="797e9cead50af35a88779ccd0b52bc11.png"></p>
+<p>hash类型数据的基本操作</p>
+<ul>
+<li>添加&#x2F;修改数据  hset key field value</li>
+<li>获取数据  hget key field   hgetall key</li>
+<li>删除数据  hdel key field1 [field2]</li>
+<li>添加&#x2F;修改多个数据  hmset key field1 value1 field2 value2 …</li>
+<li>获取多个数据  hmget key field1 field2 …</li>
+<li>获取hash表中field的数量  hlen key</li>
+<li>获取哈希表中是否存在指定的字段  hexists key field</li>
+</ul>
+<p> </p>
+<p>hash类型数据扩展操作</p>
+<ul>
+<li>获取哈希表中所有的字段名或字段值 hkeys key  hvals key</li>
+<li>设置指定字段的数值增加  hincrby key field increment   hincrbyfloat key field increment</li>
+</ul>
+<p>hash类型下的value只能存储字符串，不允许存储其他数据类型，不存在嵌套情况</p>
+<p>每个hash可以存储2^32-1个键值对</p>
+<p><strong>3.list类型</strong></p>
+<p>存储多个数据，并对数据进入存储空间的顺序进行区分</p>
+<p>一个存储空间保存多个数据，且通过数据可以体现进入顺序</p>
+<p>底层使用<strong>双向链表</strong>存储结构实现</p>
+<p>list类型数据基本操作</p>
+<ul>
+<li>添加&#x2F;修改数据  lpush key value1 [value2] …  rpush key value1 [value2] …</li>
+<li>获取数据  lrange key start end  lindex key index  llen key</li>
+<li>获取并移除数据  lpop key   rpop key</li>
+</ul>
+<p>list类型数据扩展操作</p>
+<ul>
+<li><p>命令移出并获取列表的第一个元素，如果列表没有元素会阻塞列表直到等待超时或者发现可弹出元素为止</p>
+</li>
+<li><p>blpop key1 [key2] … timeout</p>
+</li>
+<li><p>brpop key1 [key2] … timeout</p>
+</li>
+<li><p>brpoplpush source destination timeout</p>
+</li>
+<li><p>lrem key count value</p>
+</li>
+<li><p>根据count的值，移除列表中与参数value相等的元素</p>
+</li>
+<li><p>count&gt;0 从表头开始向表尾搜索，移除与value相等的元素，数量为count</p>
+</li>
+<li><p>count&lt;0 从表尾开始向表头搜索，移除与value相等的元素，数量为count的绝对值</p>
+</li>
+<li><p>count&#x3D;0 移除表中所有与value相等的值</p>
+</li>
+</ul>
+<p><strong>4.set类型</strong></p>
+<p>存储大量数据，在查询方面提供更高的效率</p>
+<p>与hash存储结构完全相同，仅存储键，不存储值，并且值是不允许重复的</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/4e1158d93ad44c7d2f768e7093db201c.png" alt="4e1158d93ad44c7d2f768e7093db201c.png"></p>
+<p>set类型数据基本操作</p>
+<ul>
+<li>添加数据 sadd key m1 …</li>
+<li>获取全部数据  smembers key</li>
+<li>删除数据  srem  key m1…</li>
+<li>获取集合数据总量  scard key</li>
+<li>判断集合中是否包括指定数据  sismember key member</li>
+</ul>
+<p>set类型数据的扩展操作</p>
+<ul>
+<li><p>随机获取集合中指定数量的数据 srandmember key [count]&#x2F;spop key [count]</p>
+</li>
+<li><p>count&gt;0 且小于集合基数，那么命令返回一个包含count个元素的数组，且数组中的元素各不相同。如果count大于等于集合基数，命令返回整个集合</p>
+</li>
+<li><p>count&lt;0 命令返回一个数组，数组中元素可能会重复多次出现，数组的长度为count的绝对值</p>
+</li>
+<li><p>srandmember仅仅返回元素，不对集合做任何改变，而spop会移除元素</p>
+</li>
+<li><p>求两个集合的交，并，差集</p>
+</li>
+<li><p>sinter key1 [key2]</p>
+</li>
+<li><p>sunion key1 [key2]</p>
+</li>
+<li><p>sdiff key1 [key2]</p>
+</li>
+<li><p>求两个集合的交，并，差集并存储到指定集合中</p>
+</li>
+<li><p>sinterstore dest key1 [key2]</p>
+</li>
+<li><p>sunionstore dest key1 [key2]</p>
+</li>
+<li><p>sdiffstore dest key1 [key2]</p>
+</li>
+<li><p>将指定数据从原始集合中移动到目标集合中</p>
+</li>
+<li><p>smove source destination member</p>
+</li>
+</ul>
+<p><strong>5.sorted_set类型</strong></p>
+<p>数据排序有利于数据的有效展示，可以根据自身特征进行排序的方式</p>
+<p>在set基础上添加可排序字段</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/96d83e43a9bd3048b133f0ecd119abfe.png" alt="96d83e43a9bd3048b133f0ecd119abfe.png"></p>
+<p>sorted_set类型数据的基本操作</p>
+<ul>
+<li>添加数据  zadd key score1 member1 [score2 member2]</li>
+<li>获取全部数据 zrange key start stop [withscores]</li>
+</ul>
+<p> </p>
+<p>                 zrevrange key start stop [withscores]</p>
+<ul>
+<li>删除数据 zrem key member [member…]</li>
+<li>按条件获取数据  zrangebyscore key min max [withscores] [limit offset count]</li>
+</ul>
+<p>                    zrevrangebyscore key max min [withscores] [limit offset count]</p>
+<p>     min和max用于限定搜索条件，limit作用于查询结果，offset表示开始位置，count表示数据总量</p>
+<ul>
+<li>条件删除数据 zremrangebyrank  key start stop</li>
+</ul>
+<p>                 zremrangebyscore key min max</p>
+<ul>
+<li>获取集合数量 zcard key</li>
+</ul>
+<p>                 zcount key min max 用于计算有序集合中指定分数区间的数量</p>
+<ul>
+<li>集合交，并操作 zinterstore dest numkeys key [key…]</li>
+</ul>
+<p>                   zunionstore dest numkeys key [key…]</p>
+<p>sorted_set类型数据的扩展操作</p>
+<ul>
+<li>获取数据对应的索引 zrank key member 默认从小到大 最小值为0</li>
+</ul>
+<p>                      zrevrank key member 默认从大到小 最大值为0</p>
+<ul>
+<li>score的获取与修改 zscore key member  zincrby key increment member</li>
+</ul>
+<p><strong>6.通用指令</strong></p>
+<p>删除指定key</p>
+<ul>
+<li>del key</li>
+</ul>
+<p>获取key是否存在</p>
+<ul>
+<li>exists key</li>
+</ul>
+<p>获取key的类型</p>
+<ul>
+<li>type key</li>
+</ul>
+<p>为指定key设置有效期</p>
+<ul>
+<li>expire  key seconds</li>
+<li>pexpire  key milliseconds</li>
+</ul>
+<p>获取key的有效时间</p>
+<ul>
+<li>ttl key</li>
+<li>pttl key</li>
+</ul>
+<p>切换key从时效性转换为永久性</p>
+<ul>
+<li>persist key</li>
+</ul>
+<p>查询key</p>
+<ul>
+<li>keys pattern</li>
+<li>* 匹配任意数量的任意符号     ？匹配一个任意符号   []匹配一个指定符号</li>
+<li>keys * 查询所有 </li>
+<li>keys it* 查询所有以it开头的key</li>
+<li>keys ??heima  查询所有前面两个字符任意，后面以heima结尾</li>
+<li>keys u[st]er:1  查询所有以u开头，以er:1结尾，中间包含一个字母，s或t</li>
+</ul>
+<p>为key改名</p>
+<ul>
+<li>rename  key  newkey</li>
+</ul>
+<p>对所有key排序</p>
+<ul>
+<li>sort</li>
+</ul>
+<p>数据库通用操作</p>
+<ul>
+<li>切换数据库  select index</li>
+<li>quit  ping   echo message</li>
+<li>数据移动   move key db</li>
+<li>dbsize  用于返回当前数据库的key的数量</li>
+<li>flushdb  清除当前数据库的数据</li>
+<li>flushall  清除所有数据库的数据</li>
+</ul>
+<p><strong>7.Redis服务端配置</strong></p>
+<ul>
+<li>daemonize  yes</li>
+<li>以守护进程方式启动，使用本启动方式，redis将会以服务的形式存在，日志将不再打印到命令窗口中</li>
+<li>.&#x2F;bin&#x2F;redis-server  --port 6380</li>
+<li>设定当前服务启动的端口号,开启多台服务器</li>
+<li>dir  “&#x2F;自定义目录&#x2F;redis&#x2F;data”</li>
+<li><strong>设定当前服务文件保存的位置，包含日志文件，持久化文件等</strong></li>
+<li>logfile “6***.log”</li>
+<li>设定日志文件名，便于查阅</li>
+</ul>
+<p><strong>8.RDB持久化</strong></p>
+<p>save指令</p>
+<ul>
+<li>save  手动执行一次保存操作</li>
+</ul>
+<p>save命令的相关配置</p>
+<ul>
+<li>dbfilename dump.rdb  rdb保存数据库的文件名，默认值为dump.rdb，经常设置为</li>
+<li>dir  设置存储rdb文件的路径</li>
+<li>rdbcompression yes  设置保存数据库的文件是否需要压缩，默认为yes</li>
+<li>rdbchecksum  yes  设置是否进行rdb文件校验</li>
+</ul>
+<p>save指令的执行会阻塞当前redis服务器，知道当前rdb过程完成，可能为造成长时间阻塞</p>
+<p>bgsave指令</p>
+<ul>
+<li>bgsave  手动启动后台保存操作，但不是立即执行</li>
+</ul>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/cd5ef05886f987bf1919ba2fde507870.png" alt="cd5ef05886f987bf1919ba2fde507870.png"></p>
+<p>bgsave命令是针对save阻塞问题做的优化，redis内部所有涉及到rdb操作都是采用bgsave方式</p>
+<p>save配置</p>
+<ul>
+<li>save second changes 满足限定时间范围内key的变化数量达到指定数量即进行持久化，在conf文件中进行配置</li>
+<li>save配置后台执行的是bgsave</li>
+<li>默认情况下执行shutdown命令时，自动执行bgsave(如果没有开启aof持久化功能)</li>
+</ul>
+<p>rdb缺点：</p>
+<ul>
+<li>rdb方式无论是执行指令还是利用配置，</li>
+<li>bgsave指令每次运行都要执行fork操作创建子进程，要牺牲掉一些性能</li>
+<li>Redis的众多版本中未进行RDB文件格式的版本统一，可能出现各版本服务之间数据格式无法兼容现象</li>
+</ul>
+<p>rdb优点：</p>
+<ul>
+<li>RDB是一个紧凑压缩的二进制文件，存储效率较高</li>
+<li>RDB内部存储的是redis在某个时间点的数据快照，</li>
+<li>RDB恢复数据的速度要比AOF快很多</li>
+</ul>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/959822b79dd506f2267dfe9c6856b731.png" alt="959822b79dd506f2267dfe9c6856b731.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/cd49411fed9cdbdfd065247f84f7f0f3.png" alt="cd49411fed9cdbdfd065247f84f7f0f3.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/d36e2db4e85d2d43fc4ee427d6090ba4.png" alt="d36e2db4e85d2d43fc4ee427d6090ba4.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/7030a3a02ee4b674629a96c64858e905.png" alt="7030a3a02ee4b674629a96c64858e905.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/a9af8ff1f7117920b0f255c4ed8cac6d.png" alt="a9af8ff1f7117920b0f255c4ed8cac6d.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/9e76efc91d35da5a5783c5ac874dde59.png" alt="9e76efc91d35da5a5783c5ac874dde59.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/dc87f3eb8fde7a5f1c9f5eb975675085.png" alt="dc87f3eb8fde7a5f1c9f5eb975675085.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/30c6152b7045e45df3718564253bebcb.png" alt="30c6152b7045e45df3718564253bebcb.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/ee1d5cd5916a946357cea1fe88a48595.png" alt="ee1d5cd5916a946357cea1fe88a48595.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/226ac13aa4a593f08816c1dd7e603ee8.png" alt="226ac13aa4a593f08816c1dd7e603ee8.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/4e86fb2d07560ea22aae7c133c0fcdf9.png" alt="4e86fb2d07560ea22aae7c133c0fcdf9.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/8c2e289b70a09fec16f26346745e2bd4.png" alt="8c2e289b70a09fec16f26346745e2bd4.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/53b9357a2bc3cb7ba1ce97eff35ca0b5.png" alt="53b9357a2bc3cb7ba1ce97eff35ca0b5.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/4771ac35ed74a0351d88bfe7fc5deb5a.png" alt="4771ac35ed74a0351d88bfe7fc5deb5a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/966116309076f0f67cd1f1ca731c6499.png" alt="966116309076f0f67cd1f1ca731c6499.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/cfb09c69c8016435e9bb21b4dbd795f0.png" alt="cfb09c69c8016435e9bb21b4dbd795f0.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/6a9ae0954590a82144dd59086eb60d0f.png" alt="6a9ae0954590a82144dd59086eb60d0f.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/58c0ff91d9462559c9a3242a5d09db7f.png" alt="58c0ff91d9462559c9a3242a5d09db7f.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/b8d2194dca22e4b9905fbf7c5d1cfb29.png" alt="b8d2194dca22e4b9905fbf7c5d1cfb29.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/2211febd182ab9db14ec1191a90f1b0d.png" alt="2211febd182ab9db14ec1191a90f1b0d.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/19f7ba8d740b74f101fd38d5dea6bf0f.png" alt="19f7ba8d740b74f101fd38d5dea6bf0f.png"></p>
+<p><strong>9.AOF持久化</strong></p>
+<ul>
+<li>AOF持久化：记录每次写命令，重启时再重新执行AOF文件中的命令，达到恢复数据的目的。与RDB相比可以简单描述为改记录数据为记录数据生产的过程</li>
+<li>AOF的主要作用是解决了<span style="background-color: #ffaaaa">数据持久化的实时性</span>，目前已经是Redis持久化的主流方式</li>
+</ul>
+<p>  AOF功能开启</p>
+<ul>
+<li>配置 appendonly yes|no</li>
+<li>是否开启AOF持久化功能，默认为不开启</li>
+<li>配置 appendfsync always|everysec|no</li>
+<li>AOF写数据的策略</li>
+<li>appendfilename filename</li>
+<li>AOF持久化文件名，默认文件名为appendonly.aof，建议配置为appendonly-端口号.aof</li>
+<li>dir 目录名</li>
+<li>AOF持久化文件保存的路径，与RDB持久化文件保持一致</li>
+</ul>
+<p>  AOF重写</p>
+<ul>
+<li>bgrewriteaof 手动重写</li>
+</ul>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/aa83ce0974c2001146458cd0e906c4fe.png" alt="aa83ce0974c2001146458cd0e906c4fe.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/aa4e72e409744c1c45d723e18b5ae065.png" alt="aa4e72e409744c1c45d723e18b5ae065.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/9d179eedef4968c1cc52dd780ec7455b.png" alt="9d179eedef4968c1cc52dd780ec7455b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/8ad9ec3d8fb94a4e653d59c5706da82e.png" alt="8ad9ec3d8fb94a4e653d59c5706da82e.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/928276b93c049def3f3d38059a911792.png" alt="928276b93c049def3f3d38059a911792.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/55da107cb5bb801a81931ff4e1c83921.png" alt="55da107cb5bb801a81931ff4e1c83921.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/a22e0ecb628d2d48d7e4ffb02185b574.png" alt="a22e0ecb628d2d48d7e4ffb02185b574.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/35e2f9da86b5a0444740e8105be9f128.png" alt="35e2f9da86b5a0444740e8105be9f128.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/43a77fba21235d380bb4186ef56b25ef.png" alt="43a77fba21235d380bb4186ef56b25ef.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/8eb01029cf27894629a39e1896d78efb.png" alt="8eb01029cf27894629a39e1896d78efb.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/495e1f395e5bd68235737df1d66ac869.png" alt="495e1f395e5bd68235737df1d66ac869.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/ef81602e24832898f421c08e1095f5eb.png" alt="ef81602e24832898f421c08e1095f5eb.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/c70a6eb399c28cf677be58d26a441e09.png" alt="c70a6eb399c28cf677be58d26a441e09.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/b11f247dfcf325f13406b936ac8facac.png" alt="b11f247dfcf325f13406b936ac8facac.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/6e5f9caaabe1b9488ea77d7c87853cdc.png" alt="6e5f9caaabe1b9488ea77d7c87853cdc.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/857b06cd5efff3969fde947954f0d02d.png" alt="857b06cd5efff3969fde947954f0d02d.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/c22422ba2b9c1fa5cc7657cb642b4a3d.png" alt="c22422ba2b9c1fa5cc7657cb642b4a3d.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/5fd7fecd8b6d9fe48077fb9e3d5ae95b.png" alt="5fd7fecd8b6d9fe48077fb9e3d5ae95b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/a355aad8014b738f8cf7a5b473675777.png" alt="a355aad8014b738f8cf7a5b473675777.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/e45af8318c236b670a289e8bf759e690.png" alt="e45af8318c236b670a289e8bf759e690.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/425b59de4ffcc4ab1c5c116854c5559f.png" alt="425b59de4ffcc4ab1c5c116854c5559f.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img20/17845d12a43edbb9d93a42de49558292.png" alt="17845d12a43edbb9d93a42de49558292.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/04/Redis%E5%9F%BA%E6%9C%AC/" data-id="cl2rpove70004kkvj4vib04jh" data-title="Redis基本" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/04/Redis%E5%88%A0%E9%99%A4%E8%BF%87%E6%9C%9F%E9%94%AE/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Redis删除过期键
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/04/Redis%E5%93%A8%E5%85%B5%E5%92%8C%E9%9B%86%E7%BE%A4%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Redis哨兵和集群简单介绍</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/">Redis高级数据</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E5%88%A0%E9%99%A4%E8%BF%87%E6%9C%9F%E9%94%AE/">Redis删除过期键</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E5%9F%BA%E6%9C%AC/">Redis基本</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E5%93%A8%E5%85%B5%E5%92%8C%E9%9B%86%E7%BE%A4%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/">Redis哨兵和集群简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-sds-%E9%93%BE%E8%A1%A8_%E5%AD%97%E5%85%B8/">Redis基本数据结构-sds  链表 字典</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>redis-事件 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="redis-事件">
+<meta property="og:url" content="http://example.com/2022/05/04/redis-%E4%BA%8B%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/bca47b9c9e7e80cd6f187f0b936ed6c7.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/d1d760f3a827a95b2b688b201f3ef09a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/a770d40b9a08ae2a0d146937e9d5b627.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/31ebbc5a986359a6ddf84950b10374be.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/fea68e0a8890bdce9e667224f70665aa.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/827a563323b6d9e62eca7469f2b5b86d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/056572981c8640b76c61bd9a6a1b2874.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/f7714407122ab51a080151cab38b21b6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/231d017a3271f7c24fd27145c2b8a236.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/87a479f5e4f9807f0a8671f5f47cd35a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/37611e8625f47f13eaf9e3db20a92a73.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/f576a0518c58a2c9002753084978f8d0.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/632c663c3ce86ecd316ad23c57fc6fcc.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/f1cc929ecbe42ee220385b2647fa38d6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/0bf29646cbf494e4e9bd52b1d7a5f29f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/eb0773100bdb3bd190ec98d478cce399.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/c435a4a846ded09fc06f78206c6bc34b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/a81032792fdd538d25d9a00764df7958.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/7a9854bcebf25148e3d3b61092db9889.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/06aae5d1160f20f217b399f4d75ffb5c.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/329f9ca569069be3a6645a0ad85d13af.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/25c042b430f00a6f07c88c54d9ea5639.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/da5bc17a3efbe96930ba93bbcb87533a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/ff80d99c47aa3d76563d1a7716ffe5eb.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/43aeec27bba23015a6e4aced5f18a00c.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/7c7d732efa03ecae68332282b4f9dc1a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/cdc90e359f0edeae1500048ed3480d7c.png">
+<meta property="article:published_time" content="2022-05-04T14:34:44.426Z">
+<meta property="article:modified_time" content="2022-05-04T14:35:19.489Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/bca47b9c9e7e80cd6f187f0b936ed6c7.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-redis-事件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/04/redis-%E4%BA%8B%E4%BB%B6/" class="article-date">
+  <time class="dt-published" datetime="2022-05-04T14:34:44.426Z" itemprop="datePublished">2022-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      redis-事件
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/bca47b9c9e7e80cd6f187f0b936ed6c7.png" alt="bca47b9c9e7e80cd6f187f0b936ed6c7.png"></p>
+<span id="more"></span>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/d1d760f3a827a95b2b688b201f3ef09a.png" alt="d1d760f3a827a95b2b688b201f3ef09a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/a770d40b9a08ae2a0d146937e9d5b627.png" alt="a770d40b9a08ae2a0d146937e9d5b627.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/31ebbc5a986359a6ddf84950b10374be.png" alt="31ebbc5a986359a6ddf84950b10374be.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/fea68e0a8890bdce9e667224f70665aa.png" alt="fea68e0a8890bdce9e667224f70665aa.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/827a563323b6d9e62eca7469f2b5b86d.png" alt="827a563323b6d9e62eca7469f2b5b86d.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/056572981c8640b76c61bd9a6a1b2874.png" alt="056572981c8640b76c61bd9a6a1b2874.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/f7714407122ab51a080151cab38b21b6.png" alt="f7714407122ab51a080151cab38b21b6.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/231d017a3271f7c24fd27145c2b8a236.png" alt="231d017a3271f7c24fd27145c2b8a236.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/87a479f5e4f9807f0a8671f5f47cd35a.png" alt="87a479f5e4f9807f0a8671f5f47cd35a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/37611e8625f47f13eaf9e3db20a92a73.png" alt="37611e8625f47f13eaf9e3db20a92a73.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/f576a0518c58a2c9002753084978f8d0.png" alt="f576a0518c58a2c9002753084978f8d0.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/632c663c3ce86ecd316ad23c57fc6fcc.png" alt="632c663c3ce86ecd316ad23c57fc6fcc.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/f1cc929ecbe42ee220385b2647fa38d6.png" alt="f1cc929ecbe42ee220385b2647fa38d6.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/0bf29646cbf494e4e9bd52b1d7a5f29f.png" alt="0bf29646cbf494e4e9bd52b1d7a5f29f.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/eb0773100bdb3bd190ec98d478cce399.png" alt="eb0773100bdb3bd190ec98d478cce399.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/c435a4a846ded09fc06f78206c6bc34b.png" alt="c435a4a846ded09fc06f78206c6bc34b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/a81032792fdd538d25d9a00764df7958.png" alt="a81032792fdd538d25d9a00764df7958.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/7a9854bcebf25148e3d3b61092db9889.png" alt="7a9854bcebf25148e3d3b61092db9889.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/06aae5d1160f20f217b399f4d75ffb5c.png" alt="06aae5d1160f20f217b399f4d75ffb5c.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/329f9ca569069be3a6645a0ad85d13af.png" alt="329f9ca569069be3a6645a0ad85d13af.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/25c042b430f00a6f07c88c54d9ea5639.png" alt="25c042b430f00a6f07c88c54d9ea5639.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/da5bc17a3efbe96930ba93bbcb87533a.png" alt="da5bc17a3efbe96930ba93bbcb87533a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/ff80d99c47aa3d76563d1a7716ffe5eb.png" alt="ff80d99c47aa3d76563d1a7716ffe5eb.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/43aeec27bba23015a6e4aced5f18a00c.png" alt="43aeec27bba23015a6e4aced5f18a00c.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/7c7d732efa03ecae68332282b4f9dc1a.png" alt="7c7d732efa03ecae68332282b4f9dc1a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/cdc90e359f0edeae1500048ed3480d7c.png" alt="cdc90e359f0edeae1500048ed3480d7c.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/04/redis-%E4%BA%8B%E4%BB%B6/" data-id="cl2rpovel000hkkvj0miv6rv8" data-title="redis-事件" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/04/redis-AOF%E6%8C%81%E4%B9%85%E5%8C%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          redis-AOF持久化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/04/Redis%E5%A4%8D%E5%88%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Redis复制</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 10px;">spring</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/">Redis高级数据</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E5%88%A0%E9%99%A4%E8%BF%87%E6%9C%9F%E9%94%AE/">Redis删除过期键</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E5%9F%BA%E6%9C%AC/">Redis基本</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E5%93%A8%E5%85%B5%E5%92%8C%E9%9B%86%E7%BE%A4%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/">Redis哨兵和集群简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/Redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-sds-%E9%93%BE%E8%A1%A8_%E5%AD%97%E5%85%B8/">Redis基本数据结构-sds  链表 字典</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
