@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>springboot自动装配 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="springboot自动装配">
+<meta property="og:url" content="http://example.com/2022/05/04/springboot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/50ddd31669c2b17fda5119ce7a45c973.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/29cadb2528a81b87f1a918685a693724.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/d05d06f543e9fdc94beddbde24ca87f2.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/ffaca537e05d92f0d764c189f7f00068.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/20a6012e826b4896dc06b838fed0b066.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/20698bcdb19ee54df5e251367e1040a8.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/1d4c369093cca762fbfda042ceeb0300.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f2065eb1118eec469ebfe1a20fef5b8b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3ba2aa62846e624268504da549f88919.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/eb7a4919d303db11c0409df9eedfde7c.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/a2486f2290ef40ca7f4a41226650d9fc.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/c9c33a3b0887d374fa61c9bce626d116.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/9c49469b4c94c5c7c9f68e74d8720bb0.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/0cd7d1d1671b5515f025e53059531239.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/267f2c7818c7871b93a5a10f7f3a6c3f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/48a928070ad2842a60ea0dc36bc105c6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/1df22d162ef199041b2d5ee9659c6ff0.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8bef8dce859d14d93b94b11c6fbad7bb.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/5c0f6949026f1e1861a547a481ff2a39.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/b5ce2b88c7b4f1dd6c5a3ba0e9653a80.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f717f77204e7d0708fd4f320d8e93859.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/4a91cc3c0fa006d2a05a2f3f9395cd44.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/512a54055959dca7f8ab7da70fe27dc6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3d85e9cf99aff33b962b17f18be572c9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/a3175994ed7cfef8e9fec425a64540b5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/830dbe790369c32f319dc17819240303.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/03012d5591ee1502e3156455f37ffb6d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f6f69e673293d3cd5e69883793e5ac8d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/651c577866f35ed15e23ecef25a3e321.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/78e2e026af4f0e58ef0e768a813d4122.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8a81861949733cf3a75f6551ed62b174.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/77934fc32813b3aeca7fe06b587475d3.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8a2bf39bbfba22997e93a8334be85c13.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3e1c28638e72e447781a28a73bee53af.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/535908bcb4666e0746709c3aa970e8af.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/1a3b1647c097a542b70587e7e1be94be.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/9be4f8fe32d28c9f517e0eeabb7d127d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/94ccff220f8faf120f63c41bd387e468.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/20210503193835672.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/931edf4d912275cbe2a940257a1b7f3a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/75bfaae2bff138199ce42527189ed80a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/b60de69bc66a81480d761162cb4c0a2c.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/5f73e19254066b88bb2a7b1bd67208fc.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/59ff0e442d4222c54a3baee5d70beea7.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/08e02f65e0d406c1390e27992fd4064b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/990b307e3daadcc6511ae02b7df42079.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/a6671e1ca8352cda78473b533aeafb9a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/53c7f6dd0587d2dcb2cc867e5bc61394.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/02e63a29ed413f3aa5c1dc4de6a1e77b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/85c1e62ec6a7fe979bf7f9005a6b37e3.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/59bd093e7bdaf5a1886741f9708a044b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/c72ef76ab120615eb4c09d7124586da6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/d6c59fdffd33ff0168b2042de847ce42.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8a234c36384182ff6b603ce250e01324.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/14eb09c1da3ba51519c5810d6c11acc2.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/6459464f6d3ce493932cc520884b93c9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/0b36a6ca9853bf1e57e8a572336c3a49.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/63e110d7ff7ad91d1f15da5b6abe316f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/4864572130e9288350344bf75baec8ce.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/44d7f425f7ce87c886730eab4d24f30d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/69fc5822385d2a2a53aa94516db725a9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f128d97c10842325064f452dee451f2e.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/62b3eb1954454c5d7ce792d988c270e3.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/82b11fd0af6a7e261db49e079abf8dc9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3b7ef70a6a2adedd4f6cc9371fcdf0b9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/239e1eb520afa1b566aef3475ca5b7a0.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f456979a0d05ac5b1414e92b5cb097b1.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/9f86dba5a39c4539983f21f347519e8a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3b60390ae323b46cb84708a9e060e7a9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/27028dafb394e23379e90a3c317729e7.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/e06f42f90f700eaa37033f3e69be050e.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/7dd5e5e8e7f7644f6beef43763d0cec5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/4eea8574146c72079688d26c1dd325f3.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/2cb0d1d59fc4c85f70a9a6279c4205f9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/2d72e4eb39cfedccfeae218e15c7b0ee.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/ace1604d98bb0f3ab0accb28b4ab2f74.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/23a12ff91d041cf49d2501d69fae2bca.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f1c2d213d6111ce9f43ec21f6c76f8d2.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/fe9b27fff25b5f64858198fd8847fb4b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/ae1d9e585ce8e9b041a853b8ed33668d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8006edc431e2db55e0bf749d74f2259b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/5e62a1934553b1f9e704881b71ae3e19.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/fdfc568ad77be76dc3da09645357cd63.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/dc2628bc6514c1073785a08c31b718b3.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/2ec8503862ed0122827c6e803a2db7b1.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/df48daaabd9ac6da349c085a71138bb8.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/9368489a6ad4beeca344d3831ead5631.png">
+<meta property="article:published_time" content="2022-05-04T13:43:56.804Z">
+<meta property="article:modified_time" content="2022-05-04T13:45:04.402Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/50ddd31669c2b17fda5119ce7a45c973.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-springboot自动装配" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/04/springboot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" class="article-date">
+  <time class="dt-published" datetime="2022-05-04T13:43:56.804Z" itemprop="datePublished">2022-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      springboot自动装配
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/50ddd31669c2b17fda5119ce7a45c973.png" alt="50ddd31669c2b17fda5119ce7a45c973.png"></p>
+<span id="more"></span>
+
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/29cadb2528a81b87f1a918685a693724.png" alt="29cadb2528a81b87f1a918685a693724.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/d05d06f543e9fdc94beddbde24ca87f2.png" alt="d05d06f543e9fdc94beddbde24ca87f2.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/ffaca537e05d92f0d764c189f7f00068.png" alt="ffaca537e05d92f0d764c189f7f00068.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/20a6012e826b4896dc06b838fed0b066.png" alt="20a6012e826b4896dc06b838fed0b066.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/20698bcdb19ee54df5e251367e1040a8.png" alt="20698bcdb19ee54df5e251367e1040a8.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/1d4c369093cca762fbfda042ceeb0300.png" alt="1d4c369093cca762fbfda042ceeb0300.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f2065eb1118eec469ebfe1a20fef5b8b.png" alt="f2065eb1118eec469ebfe1a20fef5b8b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3ba2aa62846e624268504da549f88919.png" alt="3ba2aa62846e624268504da549f88919.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/eb7a4919d303db11c0409df9eedfde7c.png" alt="eb7a4919d303db11c0409df9eedfde7c.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/a2486f2290ef40ca7f4a41226650d9fc.png" alt="a2486f2290ef40ca7f4a41226650d9fc.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/c9c33a3b0887d374fa61c9bce626d116.png" alt="c9c33a3b0887d374fa61c9bce626d116.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/9c49469b4c94c5c7c9f68e74d8720bb0.png" alt="9c49469b4c94c5c7c9f68e74d8720bb0.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/0cd7d1d1671b5515f025e53059531239.png" alt="0cd7d1d1671b5515f025e53059531239.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/267f2c7818c7871b93a5a10f7f3a6c3f.png" alt="267f2c7818c7871b93a5a10f7f3a6c3f.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/48a928070ad2842a60ea0dc36bc105c6.png" alt="48a928070ad2842a60ea0dc36bc105c6.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/1df22d162ef199041b2d5ee9659c6ff0.png" alt="1df22d162ef199041b2d5ee9659c6ff0.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8bef8dce859d14d93b94b11c6fbad7bb.png" alt="8bef8dce859d14d93b94b11c6fbad7bb.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/5c0f6949026f1e1861a547a481ff2a39.png" alt="5c0f6949026f1e1861a547a481ff2a39.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/b5ce2b88c7b4f1dd6c5a3ba0e9653a80.png" alt="b5ce2b88c7b4f1dd6c5a3ba0e9653a80.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f717f77204e7d0708fd4f320d8e93859.png" alt="f717f77204e7d0708fd4f320d8e93859.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/4a91cc3c0fa006d2a05a2f3f9395cd44.png" alt="4a91cc3c0fa006d2a05a2f3f9395cd44.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/512a54055959dca7f8ab7da70fe27dc6.png" alt="512a54055959dca7f8ab7da70fe27dc6.png"></p>
+<p>然后，在getAutoConfigurationEntry方法里面打一个断点，如下图所示，以Debug模式来启动咱们的Spring Boot应用，来看看该方法是如何来获取所有自动配置的集合的</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3d85e9cf99aff33b962b17f18be572c9.png" alt="3d85e9cf99aff33b962b17f18be572c9.png"></p>
+<p>这时，程序会来到标有断点的代码处，我们不妨按下F6快捷键（Step Over）让程序往下运行，直至运行到下面这行代码处</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/a3175994ed7cfef8e9fec425a64540b5.png" alt="a3175994ed7cfef8e9fec425a64540b5.png"></p>
+<p>这儿是来获取所有候选的配置的。不用废话，继续按下F6快捷键（Step Over）让程序往下运行，在程序往下运行的过程中，大家可以看到会对configurations集合进行一些常见操作，比如从configurations集合里面先移除一些重复的东东，再从它里面排除一些东东等等。在对configurations集合操作了一大堆之后，最终会将其封装并返回，所以，configurations集合就显得特别重要了</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/830dbe790369c32f319dc17819240303.png" alt="830dbe790369c32f319dc17819240303.png"></p>
+<p>此时，我们不妨查看一下configurations集合变量的值，如下图所示，发现它里面保存了23个全类名，这23个全类名指定的组件全部都是要导入到容器中的</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/03012d5591ee1502e3156455f37ffb6d.png" alt="03012d5591ee1502e3156455f37ffb6d.png"></p>
+<p>那我这么知道是要导入这23个全类名指定的组件呢？就是通过getCandidateConfigurations方法知道的，因为该方法就是来获取所有需要导入到容器中的配置类的，大家叫组件也行。为了研究得更深入一点，我们不妨在getCandidateConfigurations方法处打上一个断点，如下图所示</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f6f69e673293d3cd5e69883793e5ac8d.png" alt="f6f69e673293d3cd5e69883793e5ac8d.png"></p>
+<p>OK，现在我们再以Debug模式来重新启动咱们的Spring Boot应用，来看一下getCandidateConfigurations方法是怎么来获取到所有需要导入到容器中的配置类的。</p>
+<p>这时，程序会来到标有断点的代码处，如下图所示</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/651c577866f35ed15e23ecef25a3e321.png" alt="651c577866f35ed15e23ecef25a3e321.png"></p>
+<p>然后，我们不妨按下F5快捷键（Step Into）进入getCandidateConfigurations方法里面去一探究竟</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/78e2e026af4f0e58ef0e768a813d4122.png" alt="78e2e026af4f0e58ef0e768a813d4122.png"></p>
+<p>可以看到该方法是利用SpringFactoriesLoader（即Spring工厂加载器）来加载一些东东的，那加载的是些什么东东呢？还废什么话啊，直接点进loadFactoryNames方法里面去看一看不就得了</p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8a81861949733cf3a75f6551ed62b174.png" alt="8a81861949733cf3a75f6551ed62b174.png"></strong></p>
+<p>似乎loadFactoryNames方法里面又调用了一个loadSpringFactories方法啊！我们再点进去它里面看看，走着</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/77934fc32813b3aeca7fe06b587475d3.png" alt="77934fc32813b3aeca7fe06b587475d3.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8a2bf39bbfba22997e93a8334be85c13.png" alt="8a2bf39bbfba22997e93a8334be85c13.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3e1c28638e72e447781a28a73bee53af.png" alt="3e1c28638e72e447781a28a73bee53af.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/535908bcb4666e0746709c3aa970e8af.png" alt="535908bcb4666e0746709c3aa970e8af.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/1a3b1647c097a542b70587e7e1be94be.png" alt="1a3b1647c097a542b70587e7e1be94be.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/9be4f8fe32d28c9f517e0eeabb7d127d.png" alt="9be4f8fe32d28c9f517e0eeabb7d127d.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/94ccff220f8faf120f63c41bd387e468.png" alt="94ccff220f8faf120f63c41bd387e468.png"></p>
+<p>当然了，除了以上jar包之外，最核心的spring-boot-autoconfigure-2.4.5.jar里面也有META-INF&#x2F;spring.factories资源文件，而且文件内容如下图所示</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/20210503193835672.png" alt="20210503193835672.png"></p>
+<p>大家看到没有，Spring Boot应用一启动就要给容器中加载的所有配置类都在spring.factories资源文件中写死了</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/931edf4d912275cbe2a940257a1b7f3a.png" alt="931edf4d912275cbe2a940257a1b7f3a.png"></p>
+<p>停掉Spring Boot应用的断点调试，改成以普通方式运行，这时，IDEA控制台打印的结果如下图所示</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/75bfaae2bff138199ce42527189ed80a.png" alt="75bfaae2bff138199ce42527189ed80a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/b60de69bc66a81480d761162cb4c0a2c.png" alt="b60de69bc66a81480d761162cb4c0a2c.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/5f73e19254066b88bb2a7b1bd67208fc.png" alt="5f73e19254066b88bb2a7b1bd67208fc.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/59ff0e442d4222c54a3baee5d70beea7.png" alt="59ff0e442d4222c54a3baee5d70beea7.png"></p>
+<p>显然是不能的，这是为什么呢？因为该自动配置类里面的AspectJAutoProxyingConfiguration内部类头上标注了@ConditionalOnClass({Advice.class})这么一个注解，它是一个条件装配注解，意思就是说只有我们当前应用的类路径里面存在Advice类，AspectJAutoProxyingConfiguration类（它也是一个配置类）里面写的一大堆配置才生效</p>
+<p>但是什么时候才会有Advice这个类呢？不知你看到没有，该类是位于org.aspectj.weaver包下的，如下图所示</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/08e02f65e0d406c1390e27992fd4064b.png" alt="08e02f65e0d406c1390e27992fd4064b.png"></p>
+<p>所以，只有当你导入aop相关的包之后，才会有Advice这个类，继而aop场景下的自动配置才会生效</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/990b307e3daadcc6511ae02b7df42079.png" alt="990b307e3daadcc6511ae02b7df42079.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/a6671e1ca8352cda78473b533aeafb9a.png" alt="a6671e1ca8352cda78473b533aeafb9a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/53c7f6dd0587d2dcb2cc867e5bc61394.png" alt="53c7f6dd0587d2dcb2cc867e5bc61394.png"></p>
+<p>在前面咱们不是在IDEA控制台打印出了容器里面所有组件的名字嘛，那咱们就来搜搜有没有AopAutoConfiguration类型的组件，如下图所示，发现确实搜索到了，也就是说该自动配置类确实是导入进来了</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/02e63a29ed413f3aa5c1dc4de6a1e77b.png" alt="02e63a29ed413f3aa5c1dc4de6a1e77b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/85c1e62ec6a7fe979bf7f9005a6b37e3.png" alt="85c1e62ec6a7fe979bf7f9005a6b37e3.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/59bd093e7bdaf5a1886741f9708a044b.png" alt="59bd093e7bdaf5a1886741f9708a044b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/c72ef76ab120615eb4c09d7124586da6.png" alt="c72ef76ab120615eb4c09d7124586da6.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/d6c59fdffd33ff0168b2042de847ce42.png" alt="d6c59fdffd33ff0168b2042de847ce42.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8a234c36384182ff6b603ce250e01324.png" alt="8a234c36384182ff6b603ce250e01324.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/14eb09c1da3ba51519c5810d6c11acc2.png" alt="14eb09c1da3ba51519c5810d6c11acc2.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/6459464f6d3ce493932cc520884b93c9.png" alt="6459464f6d3ce493932cc520884b93c9.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/0b36a6ca9853bf1e57e8a572336c3a49.png" alt="0b36a6ca9853bf1e57e8a572336c3a49.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/63e110d7ff7ad91d1f15da5b6abe316f.png" alt="63e110d7ff7ad91d1f15da5b6abe316f.png"></p>
+<p>好了，回到主题，也就是说AspectJ这种自动代理模式没生效。接着，我们再来分析ClassProxyingConfiguration配置类，发现它上面还标注了一个@ConditionalOnProperty注解</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/4864572130e9288350344bf75baec8ce.png" alt="4864572130e9288350344bf75baec8ce.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/44d7f425f7ce87c886730eab4d24f30d.png" alt="44d7f425f7ce87c886730eab4d24f30d.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/69fc5822385d2a2a53aa94516db725a9.png" alt="69fc5822385d2a2a53aa94516db725a9.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f128d97c10842325064f452dee451f2e.png" alt="f128d97c10842325064f452dee451f2e.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/62b3eb1954454c5d7ce792d988c270e3.png" alt="62b3eb1954454c5d7ce792d988c270e3.png"></p>
+<p>以上@ConditionalOnWebApplication注解是来判断我们当前是不是一个Web应用，而且还必须是原生的SERVLET类型的Web应用。因为Spring Boot 2.0现在支持两种Web开发模式，一种是响应式编程，一种是原生SERVLET技术栈。而我们现在使用的就是原生SERVLET技术栈的这种Web开发模式</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/82b11fd0af6a7e261db49e079abf8dc9.png" alt="82b11fd0af6a7e261db49e079abf8dc9.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3b7ef70a6a2adedd4f6cc9371fcdf0b9.png" alt="3b7ef70a6a2adedd4f6cc9371fcdf0b9.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/239e1eb520afa1b566aef3475ca5b7a0.png" alt="239e1eb520afa1b566aef3475ca5b7a0.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f456979a0d05ac5b1414e92b5cb097b1.png" alt="f456979a0d05ac5b1414e92b5cb097b1.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/9f86dba5a39c4539983f21f347519e8a.png" alt="9f86dba5a39c4539983f21f347519e8a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/3b60390ae323b46cb84708a9e060e7a9.png" alt="3b60390ae323b46cb84708a9e060e7a9.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/27028dafb394e23379e90a3c317729e7.png" alt="27028dafb394e23379e90a3c317729e7.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/e06f42f90f700eaa37033f3e69be050e.png" alt="e06f42f90f700eaa37033f3e69be050e.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/7dd5e5e8e7f7644f6beef43763d0cec5.png" alt="7dd5e5e8e7f7644f6beef43763d0cec5.png"></p>
+<p>接下来，我们继续来分析。既然DispatcherServletConfiguration配置类生效了，那我们就来看一看它里面写的那些配置</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/4eea8574146c72079688d26c1dd325f3.png" alt="4eea8574146c72079688d26c1dd325f3.png"></p>
+<p>可以清楚地看到，它里面使用@Bean + 方法的形式给容器中注册了一个DispatcherServlet类型的组件</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/2cb0d1d59fc4c85f70a9a6279c4205f9.png" alt="2cb0d1d59fc4c85f70a9a6279c4205f9.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/2d72e4eb39cfedccfeae218e15c7b0ee.png" alt="2d72e4eb39cfedccfeae218e15c7b0ee.png"></p>
+<p>哎，multipartResolver方法上面标注了一个@ConditionalOnBean({MultipartResolver.class})注解，该注解的意思是说容器中有没有MultipartResolver类型的组件</p>
+<p>可以清楚地看到MultipartResolver这种类型的组件在容器中有1个，而且其名字就叫multipartResolver</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/ace1604d98bb0f3ab0accb28b4ab2f74.png" alt="ace1604d98bb0f3ab0accb28b4ab2f74.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/23a12ff91d041cf49d2501d69fae2bca.png" alt="23a12ff91d041cf49d2501d69fae2bca.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/f1c2d213d6111ce9f43ec21f6c76f8d2.png" alt="f1c2d213d6111ce9f43ec21f6c76f8d2.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/fe9b27fff25b5f64858198fd8847fb4b.png" alt="fe9b27fff25b5f64858198fd8847fb4b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/ae1d9e585ce8e9b041a853b8ed33668d.png" alt="ae1d9e585ce8e9b041a853b8ed33668d.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/8006edc431e2db55e0bf749d74f2259b.png" alt="8006edc431e2db55e0bf749d74f2259b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/5e62a1934553b1f9e704881b71ae3e19.png" alt="5e62a1934553b1f9e704881b71ae3e19.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/fdfc568ad77be76dc3da09645357cd63.png" alt="fdfc568ad77be76dc3da09645357cd63.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/dc2628bc6514c1073785a08c31b718b3.png" alt="dc2628bc6514c1073785a08c31b718b3.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/2ec8503862ed0122827c6e803a2db7b1.png" alt="2ec8503862ed0122827c6e803a2db7b1.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/df48daaabd9ac6da349c085a71138bb8.png" alt="df48daaabd9ac6da349c085a71138bb8.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img5/9368489a6ad4beeca344d3831ead5631.png" alt="9368489a6ad4beeca344d3831ead5631.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/04/springboot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" data-id="cl2rnk2v60007h0vj25k72tyn" data-title="springboot自动装配" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/04/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          spring循环依赖
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/04/spring%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91-%E9%9B%B7%E4%B8%B0%E9%98%B3%E7%AC%94%E8%AE%B04/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">spring注解开发-雷丰阳笔记4</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/spring/" style="font-size: 10px;">spring</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/04/springaop%E7%9A%84%E4%B8%89%E6%AD%A5/">springaop的三步</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/">spring循环依赖</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/springboot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">springboot自动装配</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/spring%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91-%E9%9B%B7%E4%B8%B0%E9%98%B3%E7%AC%94%E8%AE%B04/">spring注解开发-雷丰阳笔记4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/spring%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91-%E9%9B%B7%E4%B8%B0%E9%98%B3%E7%AC%94%E8%AE%B03/">spring注解开发-雷丰阳笔记3</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

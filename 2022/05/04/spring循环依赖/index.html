@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>spring循环依赖 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="spring循环依赖">
+<meta property="og:url" content="http://example.com/2022/05/04/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/e7687d1083a059f483f2a47bf8863370.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/2f8a78033c48c0740e6e893a1e989604.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/816a935c4e54504aa2a873c487ed05af.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/fb12d44cbae7417dbfb2c251058f6845.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/f42627d6e919ab3b281b1237bfd217b2.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/25e68ee748528d65b8798dfaff6c4075.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/92fa1ab59230651ce15a4ff253cacebc.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/55ec955a3508f37bfc8e6c6ed13e46ec.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/aaf3bd474d9b690f086d1672cd279674.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/4dea60a1f6b95ead7ee19a7e4203cdec.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/c0882ccecb870e1ebac0c24c2f81d128.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/5b0c378027996317870bb890976df0bf.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/29e5ff62956aa54b3d87b46fb95fbdc6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/8b5aefa3d0a87d24f2f4b28c9164b2d8.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/719334efe8b1fa54266448f13e8317bb.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/ffda29692bf7823fd986f10f54f811d2.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/2027777-20200822224312938-1691750102.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/b27c16dfaa0cafba6e65bfd004f30493.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/723f22db26e770c2120504f9f0388b6b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/295d4a1fac63d01721c894df655124ee.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/ee5d0859f5ee7e8a65c00ca6b6fb3b5a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/95e8f4c4c19e5f75ade37b9608e49aac.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/6c63c5fcf9253e939d523911ea68e83d.png">
+<meta property="article:published_time" content="2022-05-04T13:47:18.647Z">
+<meta property="article:modified_time" content="2022-05-04T13:48:24.667Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/e7687d1083a059f483f2a47bf8863370.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-spring循环依赖" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/04/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" class="article-date">
+  <time class="dt-published" datetime="2022-05-04T13:47:18.647Z" itemprop="datePublished">2022-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      spring循环依赖
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/e7687d1083a059f483f2a47bf8863370.png" alt="e7687d1083a059f483f2a47bf8863370.png"></p>
+<span id="more"></span>
+
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/2f8a78033c48c0740e6e893a1e989604.png" alt="2f8a78033c48c0740e6e893a1e989604.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/816a935c4e54504aa2a873c487ed05af.png" alt="816a935c4e54504aa2a873c487ed05af.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/fb12d44cbae7417dbfb2c251058f6845.png" alt="fb12d44cbae7417dbfb2c251058f6845.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/f42627d6e919ab3b281b1237bfd217b2.png" alt="f42627d6e919ab3b281b1237bfd217b2.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/25e68ee748528d65b8798dfaff6c4075.png" alt="25e68ee748528d65b8798dfaff6c4075.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/92fa1ab59230651ce15a4ff253cacebc.png" alt="92fa1ab59230651ce15a4ff253cacebc.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/55ec955a3508f37bfc8e6c6ed13e46ec.png" alt="55ec955a3508f37bfc8e6c6ed13e46ec.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/aaf3bd474d9b690f086d1672cd279674.png" alt="aaf3bd474d9b690f086d1672cd279674.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/4dea60a1f6b95ead7ee19a7e4203cdec.png" alt="4dea60a1f6b95ead7ee19a7e4203cdec.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/c0882ccecb870e1ebac0c24c2f81d128.png" alt="c0882ccecb870e1ebac0c24c2f81d128.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/5b0c378027996317870bb890976df0bf.png" alt="5b0c378027996317870bb890976df0bf.png"></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/29e5ff62956aa54b3d87b46fb95fbdc6.png" alt="29e5ff62956aa54b3d87b46fb95fbdc6.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/8b5aefa3d0a87d24f2f4b28c9164b2d8.png" alt="8b5aefa3d0a87d24f2f4b28c9164b2d8.png"></strong></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/719334efe8b1fa54266448f13e8317bb.png" alt="719334efe8b1fa54266448f13e8317bb.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/ffda29692bf7823fd986f10f54f811d2.png" alt="ffda29692bf7823fd986f10f54f811d2.png"></p>
+<p>spring利用singletonObjects, earlySingletonObjects, singletonFactories三级缓存去解决的，所说的缓存其实也就是三个Map</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/2027777-20200822224312938-1691750102.png" alt="2027777-20200822224312938-1691750102.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/b27c16dfaa0cafba6e65bfd004f30493.png" alt="b27c16dfaa0cafba6e65bfd004f30493.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/723f22db26e770c2120504f9f0388b6b.png" alt="723f22db26e770c2120504f9f0388b6b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/295d4a1fac63d01721c894df655124ee.png" alt="295d4a1fac63d01721c894df655124ee.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/ee5d0859f5ee7e8a65c00ca6b6fb3b5a.png" alt="ee5d0859f5ee7e8a65c00ca6b6fb3b5a.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/95e8f4c4c19e5f75ade37b9608e49aac.png" alt="95e8f4c4c19e5f75ade37b9608e49aac.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img6/6c63c5fcf9253e939d523911ea68e83d.png" alt="6c63c5fcf9253e939d523911ea68e83d.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/04/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" data-id="cl2rnk2v50006h0vject3eqd2" data-title="spring循环依赖" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/04/springaop%E7%9A%84%E4%B8%89%E6%AD%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          springaop的三步
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/04/springboot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">springboot自动装配</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/spring/" style="font-size: 10px;">spring</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/04/springaop%E7%9A%84%E4%B8%89%E6%AD%A5/">springaop的三步</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/">spring循环依赖</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/springboot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">springboot自动装配</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/spring%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91-%E9%9B%B7%E4%B8%B0%E9%98%B3%E7%AC%94%E8%AE%B04/">spring注解开发-雷丰阳笔记4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/04/spring%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91-%E9%9B%B7%E4%B8%B0%E9%98%B3%E7%AC%94%E8%AE%B03/">spring注解开发-雷丰阳笔记3</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
