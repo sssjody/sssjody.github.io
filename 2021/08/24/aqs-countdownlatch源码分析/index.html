@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>aqs---countdownlatch源码分析 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言系列文章目录 CountDownLatch是一个很有用的工具，latch是门闩的意思，该工具是为了解决某些操作只能在一组操作全部执行完成后才能执行的情景。例如，小组早上开会，只有等所有人到齐了才能开；再如，游乐园里的过山车，一次可以坐10个人，为了节约成本，通常是等够10个人了才开。CountDown是倒数计数，所以CountDownLatch的用法通常是设定一个大于0的值，该值即代表需要等待">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aqs---countdownlatch源码分析">
+<meta property="og:url" content="http://example.com/2021/08/24/aqs-countdownlatch%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言系列文章目录 CountDownLatch是一个很有用的工具，latch是门闩的意思，该工具是为了解决某些操作只能在一组操作全部执行完成后才能执行的情景。例如，小组早上开会，只有等所有人到齐了才能开；再如，游乐园里的过山车，一次可以坐10个人，为了节约成本，通常是等够10个人了才开。CountDown是倒数计数，所以CountDownLatch的用法通常是设定一个大于0的值，该值即代表需要等待">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-23T16:18:30.000Z">
+<meta property="article:modified_time" content="2022-05-08T03:39:55.521Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-aqs-countdownlatch源码分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/24/aqs-countdownlatch%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2021-08-23T16:18:30.000Z" itemprop="datePublished">2021-08-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      aqs---countdownlatch源码分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016058789">系列文章目录</a></p>
+<p>CountDownLatch是一个很有用的工具，latch是门闩的意思，该工具是为了解决某些操作只能在一组操作全部执行完成后才能执行的情景。例如，小组早上开会，只有等所有人到齐了才能开；再如，游乐园里的过山车，一次可以坐10个人，为了节约成本，通常是等够10个人了才开。CountDown是倒数计数，所以CountDownLatch的用法通常是设定一个大于0的值，该值即代表需要等待的总任务数，每完成一个任务后，将总任务数减一，直到最后该值为0，说明所有等待的任务都执行完了，“门闩”此时就被打开，后面的任务可以继续执行。</p>
+<p>CountDownLatch本身是基于共享锁实现的，如果你还不了解共享锁，建议先读一下<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016447307">逐行分析AQS源码(3)——共享锁的获取与释放</a>，然后再继续往下看。</p>
+<span id="more"></span>
+
+<h2 id="核心属性"><a href="#核心属性" class="headerlink" title="核心属性"></a><strong>核心属性</strong></h2><p>CountDownLatch主要是通过AQS的共享锁机制实现的，因此它的核心属性只有一个sync，它继承自AQS，同时覆写了tryAcquireShared和tryReleaseShared，以完成具体的实现共享锁的获取与释放的逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Sync sync;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Synchronization control For CountDownLatch.</span></span><br><span class="line"><span class="comment"> * Uses AQS state to represent count.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Sync</span> <span class="keyword">extends</span> <span class="title class_">AbstractQueuedSynchronizer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">4982264981922014374L</span>;</span><br><span class="line"></span><br><span class="line">    Sync(<span class="type">int</span> count) &#123;</span><br><span class="line">        setState(count);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="title function_">getCount</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> getState();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">int</span> <span class="title function_">tryAcquireShared</span><span class="params">(<span class="type">int</span> acquires)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (getState() == <span class="number">0</span>) ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">tryReleaseShared</span><span class="params">(<span class="type">int</span> releases)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Decrement count; signal when transition to zero</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(;;) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> getState();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(c == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">            <span class="type">int</span> <span class="variable">nextc</span> <span class="operator">=</span> c-<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (compareAndSetState(c, nextc))</span><br><span class="line">                <span class="type">return</span> <span class="variable">nextc</span> <span class="operator">=</span>= <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a><strong>构造函数</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">CountDownLatch</span><span class="params">(<span class="type">int</span> count)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(count&lt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;count &lt; 0&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>.sync = <span class="keyword">new</span> <span class="title class_">Sync</span>(count);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在构造函数中，我们就是简单传入了一个不小于0的任务数，由上面Sync的构造函数可知，这个任务数就是AQS的state的初始值。</p>
+<h2 id="核心方法"><a href="#核心方法" class="headerlink" title="核心方法"></a><strong>核心方法</strong></h2><p>CountDownLatch最核心的方法只有两个，一个是countDown方法，每调用一次，就会将当前的count减一，当count值为0时，就会唤醒所有等待中的线程；另一个是await方法，它有两种形式，一种是阻塞式，一种是带超时机制的形式，该方法用于将当前等待“门闩”开启的线程挂起，直到count值为0，这一点很类似于条件队列，相当于等待的条件就是count值为0，<strong>然而其底层的实现并不是用条件队列，而是共享锁。</strong></p>
+<h3 id="countDown"><a href="#countDown" class="headerlink" title="countDown()"></a><strong>countDown()</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">countDown</span><span class="params">()</span> &#123;</span><br><span class="line">    sync.releaseShared(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>前面说过，countDown()方法的目的就是将count值减一，并且在count值为0时，唤醒所有等待的线程，它内部调用的其实是释放共享锁的操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">releaseShared</span><span class="params">(<span class="type">int</span> arg)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(tryReleaseShared(arg)) &#123;</span><br><span class="line">            doReleaseShared();</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法由AQS实现，但是tryReleaseShared方法由Sync类自己实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">tryReleaseShared</span><span class="params">(<span class="type">int</span> releases)</span> &#123;</span><br><span class="line">        <span class="comment">// Decrement count; signal when transition to zero</span></span><br><span class="line">        <span class="keyword">for</span>(;;) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> getState();</span><br><span class="line">            <span class="keyword">if</span> (c == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="type">int</span> <span class="variable">nextc</span> <span class="operator">=</span> c-<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(compareAndSetState(c, nextc))</span><br><span class="line">                <span class="type">return</span> <span class="variable">nextc</span> <span class="operator">=</span>= <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法的实现很简单，就是获取当前的state值，如果已经为0了，直接返回false；否则通过CAS操作将state值减一，之后返回的是nextc &#x3D;&#x3D; 0，由此可见，<strong>该方法只有在count值原来不为0，但是调用后变为0时，才会返回true，否则返回false</strong>，并且也可以看出，该方法在返回true之后，后面如果再次调用，还是会返回false。也就是说，<strong>调用该方法只有一种情况会返回true，那就是state值从大于0变为0值时</strong>，这时也是所有在门闩前的任务都完成了。</p>
+<p>在tryReleaseShared返回true以后，将调用doReleaseShared方法唤醒所有等待中的线程，该方法我们在<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016447307">前面的文章</a>中已经详细分析过了，这里就不再赘述了。</p>
+<p>值得一提的是，我们其实并不关心releaseShared的返回值，而只关心tryReleaseShared的返回值，或者只关心count到0了没有，这里更像是借了共享锁的“壳”，来完成我们的目的，事实上我们完全可以自己设一个全局变量count来实现相同的效果，只不过对这个全局变量的操作也必须使用CAS。</p>
+<h3 id="await"><a href="#await" class="headerlink" title="await()"></a><strong>await()</strong></h3><p>与<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016449988#articleHeader5">Condition</a>的await()方法的语义相同，该方法是阻塞式地等待，并且是响应中断的，只不过它不是在等待signal操作，而是在等待count值为0：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">await</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    sync.acquireSharedInterruptibly(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可见，await方法内部调用的是acquireSharedInterruptibly方法，相当于借用了获取共享锁的“壳”：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">acquireSharedInterruptibly</span><span class="params">(<span class="type">int</span> arg)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    <span class="keyword">if</span> (Thread.interrupted())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">InterruptedException</span>();</span><br><span class="line">    <span class="keyword">if</span> (tryAcquireShared(arg) &lt; <span class="number">0</span>)</span><br><span class="line">        doAcquireSharedInterruptibly(arg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们先来看看Sync子类对于tryAcquireShared的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="type">int</span> <span class="title function_">tryAcquireShared</span><span class="params">(<span class="type">int</span> acquires)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (getState() == <span class="number">0</span>) ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>该方法似乎有点挂羊头卖狗肉的感觉——所谓的获取共享锁，事实上并不是什么抢锁的行为，没有任何CAS操作，它就是判断当前的state值是不是0，是就返回1，不是就返回-1。await方法当state不为0时就挂起等待，否则当state为0时就继续向下执行</strong></p>
+<p>我们调用doAcquireSharedInterruptibly(arg)将当前线程封装成Node，丢到sync queue中去阻塞等待：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">doAcquireSharedInterruptibly</span><span class="params">(<span class="type">int</span> arg)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">Node</span> <span class="variable">node</span> <span class="operator">=</span> addWaiter(Node.SHARED);</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">failed</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="type">Node</span> <span class="variable">p</span> <span class="operator">=</span> node.predecessor();</span><br><span class="line">                <span class="keyword">if</span> (p == head) &#123;</span><br><span class="line">                    <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> tryAcquireShared(arg);</span><br><span class="line">                    <span class="keyword">if</span> (r &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                        setHeadAndPropagate(node, r);</span><br><span class="line">                        p.next = <span class="literal">null</span>; <span class="comment">// help GC</span></span><br><span class="line">                        failed = <span class="literal">false</span>;</span><br><span class="line">                        <span class="keyword">return</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp;</span><br><span class="line">                        parkAndCheckInterrupt())</span><br><span class="line">                                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">InterruptedException</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (failed)</span><br><span class="line">                cancelAcquire(node);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016447307#articleHeader2">前面</a>我们介绍共享锁的获取时，已经分析过了doAcquireShared方法，只是它是不抛出InterruptedException</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><ul>
+<li>CountDownLatch相当于一个“门栓”，一个“闸门”，只有它开启了，代码才能继续往下执行。通常情况下，如果当前线程需要等其他线程执行完成后才能执行，我们就可以使用CountDownLatch。</li>
+<li>使用CountDownLatch#await方法阻塞等待一个“闸门”的开启。</li>
+<li>使用CountDownLatch#countDown方法减少闸门所等待的任务数。</li>
+<li>CountDownLatch基于<strong>共享锁</strong>实现。</li>
+<li>CountDownLatch是一次性的，“闸门”开启后，无法再重复使用，如果想重复使用，应该用[CyclicBarrier]()</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/08/24/aqs-countdownlatch%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" data-id="cl2wr0xu8000ncwvj0h5m32pc" data-title="aqs---countdownlatch源码分析" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/08/24/aqs-CyclicBarrier%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          aqs---CyclicBarrier源码分析
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16.67px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 13.33px;">多线程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/05/aqs-Condition%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0/">aqs---Condition接口的实现</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/%E5%85%B1%E4%BA%AB%E6%A8%A1%E5%9E%8B%E4%B9%8B%E5%86%85%E5%AD%98/">共享模型之内存</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%A1%AC%E4%BB%B6%E5%9F%BA%E7%A1%80%E5%92%8C%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-%E5%BE%85%E6%9B%B4%E6%96%B0/">多线程硬件基础和内存模型---待更新</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/LongAdder/">LongAdder</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/concurrenthashmap/">concurrenthashmap</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
