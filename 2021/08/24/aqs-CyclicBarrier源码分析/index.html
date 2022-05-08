@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>aqs---CyclicBarrier源码分析 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="与CountdownLatch的区别将count值递减的线程在CountDownLatch中，执行countDown方法的线程和执行await方法的线程不是一类线程。例如，线程M，N需要等待线程A,B,C,D,E执行完成后才能继续往下执行，则线程A,B,C,D,E执行完成后都将调用countDown方法，使得最后count变为了0，最后一个将count值减为0的线程调用的tryReleaseSha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aqs---CyclicBarrier源码分析">
+<meta property="og:url" content="http://example.com/2021/08/24/aqs-CyclicBarrier%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="与CountdownLatch的区别将count值递减的线程在CountDownLatch中，执行countDown方法的线程和执行await方法的线程不是一类线程。例如，线程M，N需要等待线程A,B,C,D,E执行完成后才能继续往下执行，则线程A,B,C,D,E执行完成后都将调用countDown方法，使得最后count变为了0，最后一个将count值减为0的线程调用的tryReleaseSha">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-24T08:40:05.000Z">
+<meta property="article:modified_time" content="2022-05-05T14:25:41.654Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-aqs-CyclicBarrier源码分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/24/aqs-CyclicBarrier%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2021-08-24T08:40:05.000Z" itemprop="datePublished">2021-08-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      aqs---CyclicBarrier源码分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="与CountdownLatch的区别"><a href="#与CountdownLatch的区别" class="headerlink" title="与CountdownLatch的区别"></a><strong>与CountdownLatch的区别</strong></h2><h3 id="将count值递减的线程"><a href="#将count值递减的线程" class="headerlink" title="将count值递减的线程"></a><strong>将count值递减的线程</strong></h3><p>在CountDownLatch中，执行countDown方法的线程和执行await方法的线程不是一类线程。例如，线程M，N需要等待线程A,B,C,D,E执行完成后才能继续往下执行，则线程A,B,C,D,E执行完成后都将调用countDown方法，使得最后count变为了0，最后一个将count值减为0的线程调用的tryReleaseShared方法会成功返回true，从而调用doReleaseShared()唤醒所有在sync queue中等待共享锁的线程，这里对应的就是M,N。所以，<strong>在CountDownLatch中，执行<font color="red">countDown</font>的线程不会被挂起，调用<font color="red">await</font>方法的线程会阻塞等待共享锁</strong>。</p>
+<p>而在CyclicBarrier中，将count值递减的线程和执行await方法的线程是一类线程，它们在执行完递减count的操作后，如果count值不为0，则可能同时被挂起。例如，线程A,B,C,D,E需要互相等待，保证所有线程都执行完了之后才能一起通过。</p>
+<p><strong>这就好像同一个班级出去春游，到一个景区后先自由活动，一段时间后在指定的地点集合，然后去下一个景点。这里这个指定集合的地点就是CyclicBarrier中的barrier，每一个人到达后都会执行await方法先将需要继续等待的人数(count)减1，然后(在条件队列上)挂起等待，当最后一个人到了之后，发现人已经到到齐了，则他负责执行barrierCommand(例如向班主任汇报人已经到齐)，接着就唤醒所有还在等待中的线程，开启新一代。</strong></p>
+<span id="more"></span>
+<h3 id="是否能重复使用"><a href="#是否能重复使用" class="headerlink" title="是否能重复使用"></a><strong>是否能重复使用</strong></h3><p>CountDownLatch是一次性的，当count值被减为0后，不会被重置;</p>
+<p>而CyclicBarrier在线程通过栅栏后，会开启新的一代，count值会被重置。</p>
+<h3 id="锁的类别与所使用到的队列"><a href="#锁的类别与所使用到的队列" class="headerlink" title="锁的类别与所使用到的队列"></a><strong>锁的类别与所使用到的队列</strong></h3><p>CountDownLatch使用的是共享锁，count值不为0时，线程在sync queue中等待，自始至终只牵涉到sync queue，由于使用共享锁，唤醒操作不必等待锁释放后再进行，唤醒操作很迅速。</p>
+<p>CyclicBarrier使用的是独占锁，count值不为0时，线程进入condition queue中等待，当count值降为0后，将被signalAll()方法唤醒到sync queue中去，然后挨个去争锁（因为是独占锁），在前驱节点释放锁以后，才能继续唤醒后继节点。</p>
+<p>CyclicBarrier的核心属性共有6个，我们将它分为三组。</p>
+<p>第一组：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private final int parties;</span><br><span class="line"></span><br><span class="line">private int count;</span><br></pre></td></tr></table></figure>
+
+<p>注意，这两个属性都是用来表征线程的数量，parties代表了参与线程的总数，即需要一同通过barrier的线程数，它是final类型的，由构造函数初始化，在类被创建后就一直不变了；count属性和CountDownLatch中的count一样，代表还需要等待的线程数，初始值为parties，每当一个线程到来就减一，如果该值为0，则说明所有的线程都到齐了，大家可以一起通过barrier了。</p>
+<p>第二组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Condition</span> <span class="variable">trip</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">Generation</span> <span class="variable">generation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Generation</span>();</span><br></pre></td></tr></table></figure>
+
+<p>这一组代表了CyclicBarrier的基础实现，即CyclicBarrier是基于独占锁ReentrantLock和条件队列实现的，而不是共享锁，所有相互等待的线程都会在同样的条件队列trip上挂起，被唤醒后将会被添加到sync queue中去争取独占锁lock，获得锁的线程将继续往下执行。</p>
+<p>这里还有一个Generation对象，从定义上可以看出，它只有一个boolean类型的broken属性，关于这个Generation，我们下面分析源码的时候再详细讲。</p>
+<p>第三组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Runnable barrierCommand;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个Runnable对象，代表了一个任务。当所有线程都到齐后，在它们一同通过barrier之前，就会执行这个对象的run方法，因此，<strong>它有点类似于一个钩子方法</strong>。当然这个参数不是必须的，如果线程在通过barrier之前没有什么特别需要处理的事情，该值可以为null。</p>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a><strong>构造函数</strong></h2><p>CyclicBarrier有两个构造函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">CyclicBarrier</span><span class="params">(<span class="type">int</span> parties)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>(parties, <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">CyclicBarrier</span><span class="params">(<span class="type">int</span> parties, Runnable barrierAction)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(parties&lt;= <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>.parties = parties;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>.count = parties;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>.barrierCommand = barrierAction;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，第一个构造函数本质上也是调用了第二个，即如果不传入Runnable对象，则barrierCommand的值默认为null。</p>
+<p>我们可以看出，构造函数就是初始化了parties，count，barrierCommand 三个变量。</p>
+<h2 id="辅助方法"><a href="#辅助方法" class="headerlink" title="辅助方法"></a><strong>辅助方法</strong></h2><p>要理解CyclicBarrier，首先我们需要弄明白它的几个辅助方法。</p>
+<p>首先需要理解的是“代”（Generation）的概念，由于CyclicBarrier是可重复使用的，我们把每一个新的barrier称为一“代”。这个怎么理解呢，打个比方：<strong>一个过山车有10个座位，景区常常需要等够10个人了，才会去开动过山车。于是我们常常在栏杆（barrier）外面等，等凑够了10个人，工作人员就把栏杆打开，让10个人通过；然后再将栏杆归位，后面新来的人还是要在栏杆外等待。这里，前面已经通过的人就是一“代”，后面再继续等待的一波人就是另外一“代”，栏杆每打开关闭一次，就产生新一的“代”。</strong></p>
+<p>在CyclicBarrier，开启新的一代使用的是nextGeneration方法：</p>
+<h3 id="nextGeneration"><a href="#nextGeneration" class="headerlink" title="nextGeneration()"></a><strong>nextGeneration()</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">nextGeneration</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 唤醒当前这一代中所有等待在条件队列里的线程</span></span><br><span class="line"></span><br><span class="line">    trip.signalAll();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 恢复count值，开启新的一代</span></span><br><span class="line"></span><br><span class="line">    count = parties;</span><br><span class="line"></span><br><span class="line">    generation = <span class="keyword">new</span> <span class="title class_">Generation</span>();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方法用于开启新的“一代”，通常是被最后一个调用await方法的线程调用。在该方法中，我们的主要工作就是唤醒当前这一代中所有等待在条件队列里的线程，将count的值恢复为parties，以及开启新的一代。</p>
+<h3 id="breakBarrier"><a href="#breakBarrier" class="headerlink" title="breakBarrier()"></a><strong>breakBarrier()</strong></h3><p>breakBarrier即打破现有的栅栏，让所有线程通过：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">breakBarrier</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 标记broken状态</span></span><br><span class="line"></span><br><span class="line">    generation.broken = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 恢复count值</span></span><br><span class="line"></span><br><span class="line">    count = parties;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 唤醒当前这一代中所有等待在条件队列里的线程（因为栅栏已经打破了）</span></span><br><span class="line"></span><br><span class="line">    trip.signalAll();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个breakBarrier怎么理解呢，继续拿上面过上车的例子打比方，有时候某个时间段，景区的人比较少，等待过山车的人数凑不够10个人，眼看后面迟迟没有人再来，这个时候有的工作人员也会打开栅栏，让正在等待的人进来坐过山车。这里工作人员的行为就是breakBarrier，由于并不是在凑够10个人的情况下就开启了栅栏，我们就把这一代的broken状态标记为true。</p>
+<h2 id="await"><a href="#await" class="headerlink" title="await"></a><strong>await</strong></h2><p>看完前面的辅助方法之后，接下来我们就来看CyclicBarrier最核心的await方法，可以说整个CyclicBarrier最关键的只有它了。它也是一个<strong>集“countDown”和“阻塞等待”于一体的方法。</strong></p>
+<p>await方法有两种版本，一种带超时机制，一种不带，然而从源码上看，它们最终调用的都是带超时机制的dowait方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">await</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, BrokenBarrierException &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dowait(<span class="literal">false</span>, <span class="number">0L</span>);</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span>(TimeoutException toe) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(toe); <span class="comment">// cannot happen</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">await</span><span class="params">(<span class="type">long</span> timeout, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException, BrokenBarrierException, TimeoutException &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dowait(<span class="literal">true</span>, unit.toNanos(timeout));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，dowait方法定义如下，它就是整个CyclicBarrier的核心了，我们直接在代码中以注释的形式分析：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">int</span> <span class="title function_">dowait</span><span class="params">(<span class="type">boolean</span> timed, <span class="type">long</span> nanos)</span> <span class="keyword">throws</span> InterruptedException, BrokenBarrierException, TimeoutException</span><br><span class="line"></span><br><span class="line"> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 所有执行await方法的线程必须是已经持有了锁，所以这里必须先获取锁</span></span><br><span class="line"></span><br><span class="line">        lock.lock();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">final</span> <span class="type">Generation</span> <span class="variable">g</span> <span class="operator">=</span> generation;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 前面说过，调用breakBarrier会将当前“代”的broken属性设为true</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果一个正在await的线程发现barrier已经被break了，则将直接抛出BrokenBarrierException异常</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(g.broken)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BrokenBarrierException</span>();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果当前线程被中断了，则先将栅栏打破，再抛出InterruptedException</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 这么做的原因是，所以等待在barrier的线程都是相互等待的，如果其中一个被中断了，那其他的就不用等了。</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(Thread.interrupted()) &#123;</span><br><span class="line"></span><br><span class="line">                    breakBarrier();</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">InterruptedException</span>();</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 当前线程已经来到了栅栏前，先将等待的线程数减一</span></span><br><span class="line"></span><br><span class="line">            <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> --count;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果等待的线程数为0了，说明所有的parties都到齐了</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 则可以唤醒所有等待的线程，让大家一起通过栅栏，并重置栅栏</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(index == <span class="number">0</span>) &#123; <span class="comment">// tripped</span></span><br><span class="line"></span><br><span class="line">                    <span class="type">boolean</span> <span class="variable">ranAction</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">final</span> <span class="type">Runnable</span> <span class="variable">command</span> <span class="operator">=</span> barrierCommand;</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">if</span>(command != <span class="literal">null</span>)</span><br><span class="line"></span><br><span class="line">                            <span class="comment">// 如果创建CyclicBarrier时传入了barrierCommand</span></span><br><span class="line"></span><br><span class="line">                            <span class="comment">// 说明通过栅栏前有一些额外的工作要做</span></span><br><span class="line"></span><br><span class="line">                            command.run();</span><br><span class="line"></span><br><span class="line">                        ranAction = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 唤醒所有线程，开启新一代</span></span><br><span class="line"></span><br><span class="line">                       nextGeneration();</span><br><span class="line"></span><br><span class="line">                       <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">                    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">if</span>(!ranAction)</span><br><span class="line"></span><br><span class="line">                            breakBarrier();</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果count数不为0，就将当前线程挂起，直到所有的线程到齐，或者超时，或者中断发生</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span>(;;) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 如果没有设定超时机制，则直接调用condition的await方法</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span>(!timed)</span><br><span class="line"></span><br><span class="line">                        trip.await(); <span class="comment">// 当前线程在这里被挂起</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> (nanos &gt; <span class="number">0L</span>)</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 如果设了超时，则等待指定的时间</span></span><br><span class="line"></span><br><span class="line">                        nanos = trip.awaitNanos(nanos); <span class="comment">// 当前线程在这里被挂起，超时时间到了就会自动唤醒</span></span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">catch</span>(InterruptedException ie) &#123;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 执行到这里说明线程被中断了</span></span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 如果线程被中断时还处于当前这一“代”，并且当前这一代还没有被broken,则先打破栅栏</span></span><br><span class="line"></span><br><span class="line">                        <span class="keyword">if</span>(g == generation &amp;&amp; ! g.broken) &#123;</span><br><span class="line"></span><br><span class="line">                            breakBarrier();</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">throw</span> ie;</span><br><span class="line"></span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">                            Thread.currentThread().interrupt();</span><br><span class="line"></span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 注意，执行到这里是对应于线程从await状态被唤醒了</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">// 这里先检测broken状态，能使broken状态变为true的，只有breakBarrier\(\)方法，到这里对应的场景是</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">// 1. 其他执行await方法的线程在挂起前就被中断了</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">// 2. 其他执行await方法的线程在还处于等待中时被中断了</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">// 3. 最后一个到达的线程在执行barrierCommand的时候发生了错误</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">// 4. await等待超时</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (g.broken)</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BrokenBarrierException</span>();</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 如果线程被唤醒时，新一代已经被开启了，说明一切正常，直接返回</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (g != generation)</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">return</span> index;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 如果是因为超时时间到了被唤醒，则打破栅栏，返回TimeoutException</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (timed &amp;&amp; nanos&lt;= <span class="number">0L</span>) &#123;</span><br><span class="line"></span><br><span class="line">                        breakBarrier();</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TimeoutException</span>();</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line"></span><br><span class="line">            lock.unlock();</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个await方法虽然包揽了countDown、阻塞线程、唤醒线程、执行barrierCommand任务、开启新一代，处理中断等诸多任务，但是代码本身还是比较好懂的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><ul>
+<li>CyclicBarrier实现了类似CountDownLatch的逻辑，它可以使得一组线程之间相互等待，直到所有的线程都到齐了之后再继续往下执行。</li>
+<li>CyclicBarrier基于条件队列和独占锁来实现，而非共享锁。</li>
+<li>CyclicBarrier可重复使用，在所有线程都到齐了一起通过后，将会开启新的一代。</li>
+<li>CyclicBarrier使用了</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/08/24/aqs-CyclicBarrier%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" data-id="cl2wqc5ug000lwsvj0rht1v2t" data-title="aqs---CyclicBarrier源码分析" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/04/23/spring%E6%8F%AD%E7%A7%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Spring揭秘
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16.67px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 13.33px;">多线程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/05/aqs-Condition%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0/">aqs---Condition接口的实现</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/%E5%85%B1%E4%BA%AB%E6%A8%A1%E5%9E%8B%E4%B9%8B%E5%86%85%E5%AD%98/">共享模型之内存</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%A1%AC%E4%BB%B6%E5%9F%BA%E7%A1%80%E5%92%8C%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-%E5%BE%85%E6%9B%B4%E6%96%B0/">多线程硬件基础和内存模型---待更新</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/LongAdder/">LongAdder</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/concurrenthashmap/">concurrenthashmap</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

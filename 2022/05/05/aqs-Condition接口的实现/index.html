@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>aqs---Condition接口的实现 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="这里先做一下说明，本文说wait方法时，是泛指wait()、wait(long timeout)、wait(long timeout, int nanos) 三个方法，当需要指明某个特定的方法时，会带上相应的参数。同样的，说notify方法时，也是泛指notify()，notifyAll()方法，await方法和signal方法以此类推。 首先，我们通过wait&#x2F;notify机制来类比a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aqs---Condition接口的实现">
+<meta property="og:url" content="http://example.com/2022/05/05/aqs-Condition%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这里先做一下说明，本文说wait方法时，是泛指wait()、wait(long timeout)、wait(long timeout, int nanos) 三个方法，当需要指明某个特定的方法时，会带上相应的参数。同样的，说notify方法时，也是泛指notify()，notifyAll()方法，await方法和signal方法以此类推。 首先，我们通过wait&#x2F;notify机制来类比a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img28/c720c684480383609eea7d4607c592c9.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img28/98e6b1d88bfb16b3ed0a2d586448d54e.png">
+<meta property="article:published_time" content="2022-05-05T06:03:00.092Z">
+<meta property="article:modified_time" content="2022-05-05T06:03:54.805Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img28/c720c684480383609eea7d4607c592c9.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-aqs-Condition接口的实现" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/05/aqs-Condition%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="article-date">
+  <time class="dt-published" datetime="2022-05-05T06:03:00.092Z" itemprop="datePublished">2022-05-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      aqs---Condition接口的实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这里先做一下说明，本文说wait方法时，是泛指<font color="red">wait()、wait(long timeout)、wait(long timeout, int nanos) </font>三个方法，当需要指明某个特定的方法时，会带上相应的参数。同样的，说notify方法时，也是泛指<font color="red">notify()</font>，<font color="red">notifyAll()</font>方法，await方法和signal方法以此类推。</p>
+<p>首先，我们通过wait&#x2F;notify机制来类比await&#x2F;signal机制：</p>
+<ol>
+<li>调用wait方法的线程首先必须是已经进入了同步代码块，即已经获取了监视器锁；与之类似，调用await方法的线程首先必须获得lock锁</li>
+<li>调用wait方法的线程会释放已经获得的监视器锁，进入当前监视器锁的等待队列（<font color="red">wait set</font>)</li>
+<li>调用监视器锁的notify方法会唤醒等待在该监视器锁上的线程，这些线程将开始参与锁竞争，并在获得锁后，从wait方法处恢复执行；与之类似，调用Condtion的signal方法会唤醒<span id="more"></span>
+<h2 id="同步队列-vs-条件队列"><a href="#同步队列-vs-条件队列" class="headerlink" title="同步队列 vs 条件队列"></a><strong>同步队列 vs 条件队列</strong></h2></li>
+</ol>
+<h3 id="sync-queue"><a href="#sync-queue" class="headerlink" title="sync queue"></a><strong>sync queue</strong></h3><p>首先，在<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000015739343">逐行分析AQS源码(1)——独占锁的获取</a>这篇中我们说过，所有等待锁的线程都会被包装成Node扔到一个同步队列中。该同步队列如下：</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img28/c720c684480383609eea7d4607c592c9.png" alt="c720c684480383609eea7d4607c592c9.png"></p>
+<p><font color="red">sync queue</font>是一个双向链表，我们使用<font color="red">rev、next</font>属性来串联节点。但是在这个同步队列中，我们一直没有用到<font color="red">nextWaiter</font>属性，即使是在<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016447307">共享锁</a>模式下，这一属性也只作为一个标记，指向了一个空节点，因此，在<font color="red">sync queue</font>中，我们不会用它来串联节点。</p>
+<h3 id="condtion-queue"><a href="#condtion-queue" class="headerlink" title="condtion queue"></a><strong>condtion queue</strong></h3><p>每创建一个Condtion对象就会对应一个Condtion队列，每一个调用了Condtion对象的await方法的线程都会被包装成Node扔进一个条件队列中，就像这样：</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img28/98e6b1d88bfb16b3ed0a2d586448d54e.png" alt="98e6b1d88bfb16b3ed0a2d586448d54e.png"></p>
+<p>可见，每一个Condition对象对应一个Conditon队列，每个Condtion队列都是独立的，互相不影响的。在上图中，如果我们对当前线程调用了notFull.await(), 则当前线程就会被包装成Node加到notFull队列的末尾。</p>
+<p>值得注意的是，condition queue是一个单向链表，在该链表中我们使用nextWaiter属性来串联链表。但是，就像在sync queue中不会使用nextWaiter属性来串联链表一样，在condition queue中，也并不会用到prev, next属性，它们的值都为null。也就是说，在条件队列中，Node节点真正用到的属性只有三个：</p>
+<ul>
+<li>thread</li>
+<li>waitStatus</li>
+<li>nextWaiter</li>
+</ul>
+<p>既然这里又提到了waitStatus，我们这里再回顾一下它的取值范围：</p>
+<p>volatile int waitStatus;</p>
+<p>static final int CANCELLED &#x3D; 1;</p>
+<p>static final int SIGNAL &#x3D; -1;</p>
+<p>static final int CONDITION &#x3D; -2;</p>
+<p>static final int PROPAGATE &#x3D; -3;</p>
+<p>在条件队列中，我们只需要关注一个值即可——CONDITION。它表示线程处于正常的等待状态，而只要waitStatus不是CONDITION，我们就认为线程不再等待了，此时就要从条件队列中出队。</p>
+<h3 id="sync-queue-和-conditon-queue的联系"><a href="#sync-queue-和-conditon-queue的联系" class="headerlink" title="sync queue 和 conditon queue的联系"></a><strong>sync queue 和 conditon queue的联系</strong></h3><p>一般情况下，等待锁的sync queue和条件队列condition queue是相互独立的，彼此之间并没有任何关系。但是，当我们调用某个条件队列的signal方法时，会将某个或所有等待在这个条件队列中的线程唤醒，被唤醒的线程和普通线程一样需要去争锁，如果没有抢到，则同样要被加到等待锁的sync queue中去，此时节点就从condition queue中被转移到sync queue中。</p>
+<p>但是，这里尤其要注意的是，node是被<strong>一个一个</strong>转移过去的，哪怕我们调用的是signalAll()方法也是<strong>一个一个</strong>转移过去的，而不是将整个条件队列接在sync queue的末尾。</p>
+<p>同时要注意的是，我们在sync queue中只使用prev、next来串联链表，而不使用nextWaiter;我们在condition queue中只使用nextWaiter来串联链表，而不使用prev、next.事实上，它们就是两个使用了同样的Node数据结构的完全独立的两种链表。因此，将节点从condition queue中转移到sync queue中时，我们需要断开原来的链接（nextWaiter）,建立新的链接（prev, next），这某种程度上也是需要将节点<strong>一个一个</strong>地转移过去的原因之一。</p>
+<h3 id="入队时和出队时的锁状态"><a href="#入队时和出队时的锁状态" class="headerlink" title="入队时和出队时的锁状态"></a><strong>入队时和出队时的锁状态</strong></h3><p>sync queue是等待锁的队列，当一个线程被包装成Node加到该队列中时，必然是没有获取到锁；当处于该队列中的节点获取到了锁，它将从该队列中移除(事实上移除操作是将获取到锁的节点设为新的dummy head,并将thread属性置为null)。</p>
+<p>condition队列是等待在特定条件下的队列，因为调用await方法时，必然是已经获得了lock锁，所以在进入condtion队列<strong>前</strong>线程必然是已经获取了锁；在被包装成Node扔进条件队列中后，线程将释放锁，然后挂起；当处于该队列中的线程被signal方法唤醒后，由于队列中的节点在之前挂起的时候已经释放了锁，所以必须先去再次的竞争锁，因此，该节点会被添加到sync queue中。因此，条件队列在出队时，线程并不持有锁。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/05/aqs-Condition%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0/" data-id="cl2wqc5ud000iwsvjfu04c508" data-title="aqs---Condition接口的实现" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/05/05/%E5%85%B1%E4%BA%AB%E6%A8%A1%E5%9E%8B%E4%B9%8B%E5%86%85%E5%AD%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">共享模型之内存</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16.67px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 13.33px;">多线程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/05/aqs-Condition%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0/">aqs---Condition接口的实现</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/%E5%85%B1%E4%BA%AB%E6%A8%A1%E5%9E%8B%E4%B9%8B%E5%86%85%E5%AD%98/">共享模型之内存</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%A1%AC%E4%BB%B6%E5%9F%BA%E7%A1%80%E5%92%8C%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-%E5%BE%85%E6%9B%B4%E6%96%B0/">多线程硬件基础和内存模型---待更新</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/LongAdder/">LongAdder</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/concurrenthashmap/">concurrenthashmap</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

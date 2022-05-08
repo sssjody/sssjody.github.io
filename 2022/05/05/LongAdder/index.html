@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>LongAdder | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="LongAdder">
+<meta property="og:url" content="http://example.com/2022/05/05/LongAdder/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/2f4c9d27be3c8c5786c272915ea524e5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/571de691d28f1310f752809ae554ca13.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/1.webp">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/fe0292235ee3f6dd182ace174473fcbc.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/f06dfe740a76e41933017a45f4dc32e5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/068217a85434fac2605a4d9db18e4180.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/548d989ebf38626ce56df0fb896248e1.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/ed03610ce228837a99325a289b662b61.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/e828fa230d2db92db831c2820b0df3cb.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/717d7cfbd7756669577abc599ad62046.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/df57c7f5cd65aad9a2b395505c1121d2.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/6c2f42af2f6fa63b34676d47e3a5ee2f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/20e1a6a645866ab986ccf75b39b8352d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/c379fc4fe859ffbda8326b00a8c8bf30.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/1900685-40f874a82eaa6b4a.webp">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/a3fe23f8be9d64dfe6631fbf2d07ea0c.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/daa7b640bb97f8adbbabc102817f45c5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/c70a621a1e9856d1c5902484f85ec50b.png">
+<meta property="article:published_time" content="2022-05-05T05:36:48.864Z">
+<meta property="article:modified_time" content="2022-05-05T05:38:10.142Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/2f4c9d27be3c8c5786c272915ea524e5.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-LongAdder" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/05/LongAdder/" class="article-date">
+  <time class="dt-published" datetime="2022-05-05T05:36:48.864Z" itemprop="datePublished">2022-05-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      LongAdder
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/2f4c9d27be3c8c5786c272915ea524e5.png" alt="2f4c9d27be3c8c5786c272915ea524e5.png"></p>
+<span id="more"></span>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/571de691d28f1310f752809ae554ca13.png" alt="571de691d28f1310f752809ae554ca13.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/1.webp" alt="1.webp"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/fe0292235ee3f6dd182ace174473fcbc.png" alt="fe0292235ee3f6dd182ace174473fcbc.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/f06dfe740a76e41933017a45f4dc32e5.png" alt="f06dfe740a76e41933017a45f4dc32e5.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/068217a85434fac2605a4d9db18e4180.png" alt="068217a85434fac2605a4d9db18e4180.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/548d989ebf38626ce56df0fb896248e1.png" alt="548d989ebf38626ce56df0fb896248e1.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/ed03610ce228837a99325a289b662b61.png" alt="ed03610ce228837a99325a289b662b61.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/e828fa230d2db92db831c2820b0df3cb.png" alt="e828fa230d2db92db831c2820b0df3cb.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/717d7cfbd7756669577abc599ad62046.png" alt="717d7cfbd7756669577abc599ad62046.png"></p>
+<p>LongAdder会将Thread的threadLocalRandomProbe属性视为线程的哈希值，然后通过hash &amp; (cells.length-1)计算下标，每个线程只操作自己对应下标的Cell实例，减少热点资源的争用。</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/df57c7f5cd65aad9a2b395505c1121d2.png" alt="df57c7f5cd65aad9a2b395505c1121d2.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/6c2f42af2f6fa63b34676d47e3a5ee2f.png" alt="6c2f42af2f6fa63b34676d47e3a5ee2f.png"></p>
+<h3 id="3-2-Cell内部类"><a href="#3-2-Cell内部类" class="headerlink" title="3.2 Cell内部类"></a><strong>3.2 Cell内部类</strong></h3><p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/20e1a6a645866ab986ccf75b39b8352d.png" alt="20e1a6a645866ab986ccf75b39b8352d.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/c379fc4fe859ffbda8326b00a8c8bf30.png" alt="c379fc4fe859ffbda8326b00a8c8bf30.png"></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Adds the given value.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> x the value to add</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">long</span> x)</span> &#123;</span><br><span class="line">        Cell[] as; <span class="type">long</span> b, v; <span class="type">int</span> m; Cell a;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 如果一下两种条件则继续执行if内的语句</span></span><br><span class="line"><span class="comment">         * 1. cells数组不为null（不存在争用的时候，cells数组一定为null，一旦对base的cas操作失败，才会初始化cells数组）</span></span><br><span class="line"><span class="comment">         * 2. 如果cells数组为null，如果casBase执行成功，则直接返回，如果casBase方法执行失败（casBase失败，说明第一次争用冲突产生，需要对cells数组初始化）进入if内；</span></span><br><span class="line"><span class="comment">         * casBase方法很简单，就是通过UNSAFE类的cas设置成员变量base的值为base+要累加的值</span></span><br><span class="line"><span class="comment">         * casBase执行成功的前提是无竞争，这时候cells数组还没有用到为null，可见在无竞争的情况下是类似于AtomticInteger处理方式，使用cas做累加。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">if</span> ((as = cells) != <span class="literal">null</span> || !casBase(b = base, b + x)) &#123;</span><br><span class="line">            <span class="comment">//uncontended判断cells数组中，当前线程要做cas累加操作的某个元素是否不存在争用，如果cas失败则存在争用；uncontended=false代表存在争用，uncontended=true代表不存在争用。</span></span><br><span class="line">            <span class="type">boolean</span> <span class="variable">uncontended</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             *1. as == null ： cells数组未被初始化，成立则直接进入if执行cell初始化</span></span><br><span class="line"><span class="comment">             *2. (m = as.length - 1) &lt; 0： cells数组的长度为0</span></span><br><span class="line"><span class="comment">             *条件1与2都代表cells数组没有被初始化成功，初始化成功的cells数组长度为2；</span></span><br><span class="line"><span class="comment">             *3. (a = as[getProbe() &amp; m]) == null ：如果cells被初始化，且它的长度不为0，则通过getProbe方法获取当前线程Thread的threadLocalRandomProbe变量的值，初始为0，然后执行threadLocalRandomProbe&amp;(cells.length-1 ),相当于m%cells.length;如果cells[threadLocalRandomProbe%cells.length]的位置为null，这说明这个位置从来没有线程做过累加，需要进入if继续执行，在这个位置创建一个新的Cell对象；</span></span><br><span class="line"><span class="comment">             *4. !(uncontended = a.cas(v = a.value, v + x))：尝试对cells[threadLocalRandomProbe%cells.length]位置的Cell对象中的value值做累加操作,并返回操作结果,如果失败了则进入if，重新计算一个threadLocalRandomProbe；</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">             如果进入if语句执行longAccumulate方法,有三种情况</span></span><br><span class="line"><span class="comment">             1. 前两个条件代表cells没有初始化，</span></span><br><span class="line"><span class="comment">             2. 第三个条件指当前线程hash到的cells数组中的位置还没有其它线程做过累加操作，</span></span><br><span class="line"><span class="comment">             3. 第四个条件代表产生了冲突,uncontended=false</span></span><br><span class="line"><span class="comment">             **/</span></span><br><span class="line">            <span class="keyword">if</span> (as == <span class="literal">null</span> || (m = as.length - <span class="number">1</span>) &lt; <span class="number">0</span> ||</span><br><span class="line">                (a = as[getProbe() &amp; m]) == <span class="literal">null</span> ||</span><br><span class="line">                !(uncontended = a.cas(v = a.value, v + x)))</span><br><span class="line">                longAccumulate(x, <span class="literal">null</span>, uncontended);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/1900685-40f874a82eaa6b4a.webp" alt="1900685-40f874a82eaa6b4a.webp"></p>
+<p>如上所示，只有从未出现过并发冲突的时候，base基数才会使用到，一旦出现了并发冲突，之后所有的操作都只是针对cell[]数组中的单元Cell。如果cell[]数组未初始化，会调用父类的longAccumulate去初始化cell[]，如果cell[]已经初始化但冲突发生在Cell单元内，则也是调用父类的longAccumulate，此时可能需要对cell[]扩容了。接下来我们来看下longAccumulate方法。</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/a3fe23f8be9d64dfe6631fbf2d07ea0c.png" alt="a3fe23f8be9d64dfe6631fbf2d07ea0c.png"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Handles cases of updates involving initialization, resizing,</span></span><br><span class="line"><span class="comment">     * creating new Cells, and/or contention. See above for</span></span><br><span class="line"><span class="comment">     * explanation. This method suffers the usual non-modularity</span></span><br><span class="line"><span class="comment">     * problems of optimistic retry code, relying on rechecked sets of</span></span><br><span class="line"><span class="comment">     * reads.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> x the value</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> fn the update function, or null for add (this convention</span></span><br><span class="line"><span class="comment">     * avoids the need for an extra field or function in LongAdder).</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> wasUncontended false if CAS failed before call</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">longAccumulate</span><span class="params">(<span class="type">long</span> x, LongBinaryOperator fn,</span></span><br><span class="line"><span class="params">                              <span class="type">boolean</span> wasUncontended)</span> &#123;</span><br><span class="line">        <span class="comment">//获取当前线程的threadLocalRandomProbe值作为hash值,如果当前线程的threadLocalRandomProbe为0，说明当前线程是第一次进入该方法，则强制设置线程的threadLocalRandomProbe为ThreadLocalRandom类的成员静态私有变量probeGenerator的值，后面会详细将hash值的生成;</span></span><br><span class="line">        <span class="comment">//另外需要注意，如果threadLocalRandomProbe=0，代表新的线程开始参与cell争用的情况</span></span><br><span class="line">        <span class="comment">//1.当前线程之前还没有参与过cells争用（也许cells数组还没初始化，进到当前方法来就是为了初始化cells数组后争用的）,是第一次执行base的cas累加操作失败；</span></span><br><span class="line">        <span class="comment">//2.或者是在执行add方法时，对cells某个位置的Cell的cas操作第一次失败，则将wasUncontended设置为false，那么这里会将其重新置为true；第一次执行操作失败；</span></span><br><span class="line">        <span class="comment">//凡是参与了cell争用操作的线程threadLocalRandomProbe都不为0；</span></span><br><span class="line">        <span class="type">int</span> h;</span><br><span class="line">        <span class="keyword">if</span> ((h = getProbe()) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//初始化ThreadLocalRandom;</span></span><br><span class="line">            ThreadLocalRandom.current(); <span class="comment">// force initialization</span></span><br><span class="line">            <span class="comment">//将h设置为0x9e3779b9</span></span><br><span class="line">            h = getProbe();</span><br><span class="line">            <span class="comment">//设置未竞争标记为true</span></span><br><span class="line">            wasUncontended = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//cas冲突标志，表示当前线程hash到的Cells数组的位置，做cas累加操作时与其它线程发生了冲突，cas失败；collide=true代表有冲突，collide=false代表无冲突</span></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">collide</span> <span class="operator">=</span> <span class="literal">false</span>;                <span class="comment">// True if last slot nonempty</span></span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            Cell[] as; Cell a; <span class="type">int</span> n; <span class="type">long</span> v;</span><br><span class="line">            <span class="comment">//这个主干if有三个分支</span></span><br><span class="line">            <span class="comment">//1.CASE1：处理cells数组已经正常初始化了的情况（这个if分支处理add方法的四个条件中的3和4）</span></span><br><span class="line">            <span class="comment">//2.CASE2：处理cells数组没有初始化或者长度为0的情况；（这个分支处理add方法的四个条件中的1和2）</span></span><br><span class="line">            <span class="comment">//3.CASE3：处理如果cell数组没有初始化，并且其它线程正在执行对cells数组初始化的操作，及cellbusy=1；则尝试将累加值通过cas累加到base上</span></span><br><span class="line">            <span class="comment">//先看主分支一</span></span><br><span class="line">            <span class="keyword">if</span> ((as = cells) != <span class="literal">null</span> &amp;&amp; (n = as.length) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 *CASE1：这个是处理add方法内部if分支的条件3：如果被hash到的位置为null，说明没有线程在这个位置设置过值，没有竞争，可以直接使用，则用x值作为初始值创建一个新的Cell对象，对cells数组使用cellsBusy加锁，然后将这个Cell对象放到cells[m%cells.length]位置上</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">if</span> ((a = as[(n - <span class="number">1</span>) &amp; h]) == <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="comment">//cellsBusy == 0 代表当前没有线程cells数组做修改</span></span><br><span class="line">                    <span class="keyword">if</span> (cellsBusy == <span class="number">0</span>) &#123;       <span class="comment">// Try to attach new Cell</span></span><br><span class="line">                        <span class="comment">//将要累加的x值作为初始值创建一个新的Cell对象，</span></span><br><span class="line">                        <span class="type">Cell</span> <span class="variable">r</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cell</span>(x);   <span class="comment">// Optimistically create</span></span><br><span class="line">                        <span class="comment">//如果cellsBusy=0无锁，则通过cas将cellsBusy设置为1加锁</span></span><br><span class="line">                        <span class="keyword">if</span> (cellsBusy == <span class="number">0</span> &amp;&amp; casCellsBusy()) &#123;</span><br><span class="line">                            <span class="comment">//标记Cell是否创建成功并放入到cells数组被hash的位置上</span></span><br><span class="line">                            <span class="type">boolean</span> <span class="variable">created</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">                            <span class="keyword">try</span> &#123;               <span class="comment">// Recheck under lock</span></span><br><span class="line">                                Cell[] rs; <span class="type">int</span> m, j;</span><br><span class="line">                                <span class="comment">//再次检查cells数组不为null，且长度不为空，且hash到的位置的Cell为null</span></span><br><span class="line">                                <span class="keyword">if</span> ((rs = cells) != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                                    (m = rs.length) &gt; <span class="number">0</span> &amp;&amp;</span><br><span class="line">                                    rs[j = (m - <span class="number">1</span>) &amp; h] == <span class="literal">null</span>) &#123;</span><br><span class="line">                                    <span class="comment">//将新的cell设置到该位置</span></span><br><span class="line">                                    rs[j] = r;</span><br><span class="line">                                    created = <span class="literal">true</span>;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                                <span class="comment">//去掉锁</span></span><br><span class="line">                                cellsBusy = <span class="number">0</span>;</span><br><span class="line">                            &#125;</span><br><span class="line">                            <span class="comment">//生成成功，跳出循环</span></span><br><span class="line">                            <span class="keyword">if</span> (created)</span><br><span class="line">                                <span class="keyword">break</span>;</span><br><span class="line">                            <span class="comment">//如果created为false，说明上面指定的cells数组的位置cells[m%cells.length]已经有其它线程设置了cell了，继续执行循环。</span></span><br><span class="line">                            <span class="keyword">continue</span>;           <span class="comment">// Slot is now non-empty</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//如果执行的当前行，代表cellsBusy=1，有线程正在更改cells数组，代表产生了冲突，将collide设置为false</span></span><br><span class="line">                    collide = <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * case2：如果add方法中条件4的通过cas设置cells[m%cells.length]位置的Cell对象中的value值设置为v+x失败,说明已经发生竞争，将wasUncontended设置为true，跳出内部的if判断，最后重新计算一个新的probe，然后重新执行循环;</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (!wasUncontended)       <span class="comment">// CAS already known to fail</span></span><br><span class="line">                    <span class="comment">//设置未竞争标志位true，继续执行，后面会算一个新的probe值，然后重新执行循环。</span></span><br><span class="line">                    wasUncontended = <span class="literal">true</span>;      <span class="comment">// Continue after rehash</span></span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * case3：新的争用线程参与争用的情况：处理刚进入当前方法时threadLocalRandomProbe=0的情况，也就是当前线程第一次参与cell争用的cas失败，这里会尝试将x值加到cells[m%cells.length]的value ，如果成功直接退出</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (a.cas(v = a.value, ((fn == <span class="literal">null</span>) ? v + x :</span><br><span class="line">                                             fn.applyAsLong(v, x))))</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 *  case4:case3处理新的线程争用执行失败了，这时如果cells数组的长度已经到了最大值（大于等于cup数量），或者是当前cells已经做了扩容，则将collide设置为false，后面重新计算prob的值</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (n &gt;= NCPU || cells != as)</span><br><span class="line">                    collide = <span class="literal">false</span>;            <span class="comment">// At max size or stale</span></span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * case5:如果发生了冲突collide=false，则设置其为true；会在最后重新计算hash值后，进入下一次for循环</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (!collide)</span><br><span class="line">                    <span class="comment">//设置冲突标志，表示发生了冲突，需要再次生成hash，重试。 如果下次重试任然走到了改分支此时collide=true，!collide条件不成立，则走后一个分支</span></span><br><span class="line">                    collide = <span class="literal">true</span>;</span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * case6:扩容cells数组，新参与cell争用的线程两次均失败，且符合库容条件，会执行该分支</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (cellsBusy == <span class="number">0</span> &amp;&amp; casCellsBusy()) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        <span class="comment">//检查cells是否已经被扩容</span></span><br><span class="line">                        <span class="keyword">if</span> (cells == as) &#123;      <span class="comment">// Expand table unless stale</span></span><br><span class="line">                            Cell[] rs = <span class="keyword">new</span> <span class="title class_">Cell</span>[n &lt;&lt; <span class="number">1</span>];</span><br><span class="line">                            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">                                rs[i] = as[i];</span><br><span class="line">                            cells = rs;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                        cellsBusy = <span class="number">0</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    collide = <span class="literal">false</span>;</span><br><span class="line">                    <span class="keyword">continue</span>;                   <span class="comment">// Retry with expanded table</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//为当前线程重新计算hash值</span></span><br><span class="line">                h = advanceProbe(h);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//这个大的分支处理add方法中的条件1与条件2成立的情况，如果cell表还未初始化或者长度为0，先尝试获取cellsBusy锁。</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cellsBusy == <span class="number">0</span> &amp;&amp; cells == as &amp;&amp; casCellsBusy()) &#123;</span><br><span class="line">                <span class="type">boolean</span> <span class="variable">init</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;                           <span class="comment">// Initialize table</span></span><br><span class="line">                    <span class="comment">//初始化cells数组，初始容量为2,并将x值通过hash&amp;1，放到0个或第1个位置上</span></span><br><span class="line">                    <span class="keyword">if</span> (cells == as) &#123;</span><br><span class="line">                        Cell[] rs = <span class="keyword">new</span> <span class="title class_">Cell</span>[<span class="number">2</span>];</span><br><span class="line">                        rs[h &amp; <span class="number">1</span>] = <span class="keyword">new</span> <span class="title class_">Cell</span>(x);</span><br><span class="line">                        cells = rs;</span><br><span class="line">                        init = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    <span class="comment">//解锁</span></span><br><span class="line">                    cellsBusy = <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//如果init为true说明初始化成功，跳出循环</span></span><br><span class="line">                <span class="keyword">if</span> (init)</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             *如果以上操作都失败了，则尝试将值累加到base上；</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (casBase(v = base, ((fn == <span class="literal">null</span>) ? v + x :</span><br><span class="line">                                        fn.applyAsLong(v, x))))</span><br><span class="line">                <span class="keyword">break</span>;                          <span class="comment">// Fall back on using base</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/daa7b640bb97f8adbbabc102817f45c5.png" alt="daa7b640bb97f8adbbabc102817f45c5.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/c70a621a1e9856d1c5902484f85ec50b.png" alt="c70a621a1e9856d1c5902484f85ec50b.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/05/LongAdder/" data-id="cl2wqc5t50000wsvj963t66h8" data-title="LongAdder" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%A1%AC%E4%BB%B6%E5%9F%BA%E7%A1%80%E5%92%8C%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-%E5%BE%85%E6%9B%B4%E6%96%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          多线程硬件基础和内存模型---待更新
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/05/concurrenthashmap/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">concurrenthashmap</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16.67px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 13.33px;">多线程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/05/aqs-Condition%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0/">aqs---Condition接口的实现</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/%E5%85%B1%E4%BA%AB%E6%A8%A1%E5%9E%8B%E4%B9%8B%E5%86%85%E5%AD%98/">共享模型之内存</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%A1%AC%E4%BB%B6%E5%9F%BA%E7%A1%80%E5%92%8C%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-%E5%BE%85%E6%9B%B4%E6%96%B0/">多线程硬件基础和内存模型---待更新</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/LongAdder/">LongAdder</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/05/concurrenthashmap/">concurrenthashmap</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
