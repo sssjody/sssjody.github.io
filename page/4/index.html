@@ -71,6 +71,250 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LongAdder" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/05/LongAdder/" class="article-date">
+  <time class="dt-published" datetime="2022-05-05T05:36:48.864Z" itemprop="datePublished">2022-05-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/05/LongAdder/">LongAdder</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img25/2f4c9d27be3c8c5786c272915ea524e5.png" alt="2f4c9d27be3c8c5786c272915ea524e5.png"></p>
+        
+          <p class="article-more-link">
+            <a href="/2022/05/05/LongAdder/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/05/LongAdder/" data-id="cl2x7k5ls0008n4vj7jlrdrgc" data-title="LongAdder" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-concurrenthashmap" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/05/concurrenthashmap/" class="article-date">
+  <time class="dt-published" datetime="2022-05-05T05:15:25.732Z" itemprop="datePublished">2022-05-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/05/concurrenthashmap/">concurrenthashmap</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a><strong>一、简介</strong></h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hello-shf/p/12168181.html">上篇文章</a>详细介绍了HashMap的源码及原理，本文趁热打铁继续分析ConcurrentHashMap的原理。</p>
+<p>首先在看本文之前，希望对HashMap有一个详细的了解。不然看直接看ConcurrentHashMap的源码还是有些费劲的。</p>
+<p>相信对HashMap，HashTable有一定了解，应该知道HashMap是不具备线程安全性的，在resize时会丢数据（JDK8），而HashTable虽然保证了线程安全性，但是其是通过给每个方法加Synchronized关键字达到的同步目的。但是都知道Synchronized在竞争激烈的多线程并发环境中，在性能上的表现是非常不如人意的。那在高并发环境中HashMap如何保证线程安全而又不浪费太多性能呢？答案就是Java J.U.C并发包中的ConcurrentHashMap。</p>
+<p>依然开局一张图 。JDK8中的ConcurrentHashMap数据结构。</p>
+        
+          <p class="article-more-link">
+            <a href="/2022/05/05/concurrenthashmap/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/05/concurrenthashmap/" data-id="cl2x7k5mz0019n4vjhgrc33ey" data-title="concurrenthashmap" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Maven基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/05/Maven%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2022-05-05T04:48:10.398Z" itemprop="datePublished">2022-05-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/05/Maven%E5%9F%BA%E7%A1%80/">Maven基础</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img23/a154b9dd0bf548859733e6e6bc9f5381.png" alt="a154b9dd0bf548859733e6e6bc9f5381.png"></p>
+        
+          <p class="article-more-link">
+            <a href="/2022/05/05/Maven%E5%9F%BA%E7%A1%80/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/05/Maven%E5%9F%BA%E7%A1%80/" data-id="cl2x7k5lw000cn4vj5tkt663z" data-title="Maven基础" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Redis高级数据" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/" class="article-date">
+  <time class="dt-published" datetime="2022-05-04T15:02:08.063Z" itemprop="datePublished">2022-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/">Redis高级数据</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>Bitmaps</strong></p>
+<p>Bitmaps类型的基本操作</p>
+<ul>
+<li><p>获取指定key对应偏移量上的bit值</p>
+</li>
+<li><p>getbit key offset</p>
+</li>
+<li><p>设置指定key对应偏移量上的bit值，value只能是1或0</p>
+</li>
+<li><p>setbit key offset value</p></li></ul>
+        
+          <p class="article-more-link">
+            <a href="/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/" data-id="cl2x7k5mn000tn4vj7qzscfwj" data-title="Redis高级数据" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Redis删除过期键" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/04/Redis%E5%88%A0%E9%99%A4%E8%BF%87%E6%9C%9F%E9%94%AE/" class="article-date">
+  <time class="dt-published" datetime="2022-05-04T14:58:30.369Z" itemprop="datePublished">2022-05-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/04/Redis%E5%88%A0%E9%99%A4%E8%BF%87%E6%9C%9F%E9%94%AE/">Redis删除过期键</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><code>Redis删除过期键</code></p>
+<p>Redis是一种内存级数据库，所有数据均存放在内存中，内存中的数据可以通过TTL指令获取其状态</p>
+<ul>
+<li>XX   具有时效性的数据</li>
+<li>-1    永久有效的数据</li>
+<li>-2    不存在的数据 已经过期的数据 或 被删除的数据 或 未定义的数据</li>
+</ul>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img21/4aa608b7cfd5557f6fa39a2edad06479.png" alt="4aa608b7cfd5557f6fa39a2edad06479.png"></p>
+        
+          <p class="article-more-link">
+            <a href="/2022/05/04/Redis%E5%88%A0%E9%99%A4%E8%BF%87%E6%9C%9F%E9%94%AE/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/04/Redis%E5%88%A0%E9%99%A4%E8%BF%87%E6%9C%9F%E9%94%AE/" data-id="cl2x7k5m2000fn4vjbpa9cwjr" data-title="Redis删除过期键" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Redis基本" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/05/04/Redis%E5%9F%BA%E6%9C%AC/" class="article-date">
@@ -105,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/Redis%E5%9F%BA%E6%9C%AC/" data-id="cl2x5p2zl000cmkvj9lyw7iws" data-title="Redis基本" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/05/04/Redis%E5%9F%BA%E6%9C%AC/" data-id="cl2x7k5mb000ln4vj8alhdkb7" data-title="Redis基本" class="article-share-link">Share</a>
       
       
       
@@ -150,7 +394,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/Redis%E5%93%A8%E5%85%B5%E5%92%8C%E9%9B%86%E7%BE%A4%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" data-id="cl2x5p2zj0009mkvj2c8hh7n8" data-title="Redis哨兵和集群简单介绍" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/05/04/Redis%E5%93%A8%E5%85%B5%E5%92%8C%E9%9B%86%E7%BE%A4%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/" data-id="cl2x7k5m9000jn4vjdmuo4qk3" data-title="Redis哨兵和集群简单介绍" class="article-share-link">Share</a>
       
       
       
@@ -195,7 +439,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/Redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-sds-%E9%93%BE%E8%A1%A8_%E5%AD%97%E5%85%B8/" data-id="cl2x5p2zm000dmkvjcu86c19w" data-title="Redis基本数据结构-sds  链表 字典" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/05/04/Redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-sds-%E9%93%BE%E8%A1%A8_%E5%AD%97%E5%85%B8/" data-id="cl2x7k5md000nn4vjfrkz958x" data-title="Redis基本数据结构-sds  链表 字典" class="article-share-link">Share</a>
       
       
       
@@ -241,7 +485,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E8%B7%B3%E8%B7%83%E8%A1%A8_%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88/" data-id="cl2x5p30p001tmkvjbc580kyc" data-title="redis基本数据结构-跳跃表 整数集合" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/05/04/redis%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E8%B7%B3%E8%B7%83%E8%A1%A8_%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88/" data-id="cl2x7k5nv0023n4vj29bn78fa" data-title="redis基本数据结构-跳跃表 整数集合" class="article-share-link">Share</a>
       
       
       
@@ -286,244 +530,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/redis-%E5%AF%B9%E8%B1%A1/" data-id="cl2x5p30m001pmkvjdm4phjuj" data-title="redis-对象" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-redis-数据库" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/04/redis-%E6%95%B0%E6%8D%AE%E5%BA%93/" class="article-date">
-  <time class="dt-published" datetime="2022-05-04T14:40:10.852Z" itemprop="datePublished">2022-05-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/04/redis-%E6%95%B0%E6%8D%AE%E5%BA%93/">redis- 数据库</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img15/bbd569b411ac774d4a20db8dd168c6e3.png" alt="bbd569b411ac774d4a20db8dd168c6e3.png"></p>
-        
-          <p class="article-more-link">
-            <a href="/2022/05/04/redis-%E6%95%B0%E6%8D%AE%E5%BA%93/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/redis-%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="cl2x5p30n001rmkvjdwwq5vyl" data-title="redis- 数据库" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-redis-AOF持久化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/04/redis-AOF%E6%8C%81%E4%B9%85%E5%8C%96/" class="article-date">
-  <time class="dt-published" datetime="2022-05-04T14:37:02.402Z" itemprop="datePublished">2022-05-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/04/redis-AOF%E6%8C%81%E4%B9%85%E5%8C%96/">redis-AOF持久化</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img14/b2ba820a70a5b2d0dad3e3d9f97d0e72.png" alt="b2ba820a70a5b2d0dad3e3d9f97d0e72.png"></p>
-        
-          <p class="article-more-link">
-            <a href="/2022/05/04/redis-AOF%E6%8C%81%E4%B9%85%E5%8C%96/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/redis-AOF%E6%8C%81%E4%B9%85%E5%8C%96/" data-id="cl2x5p30e001fmkvjc99d71wn" data-title="redis-AOF持久化" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-redis-事件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/04/redis-%E4%BA%8B%E4%BB%B6/" class="article-date">
-  <time class="dt-published" datetime="2022-05-04T14:34:44.426Z" itemprop="datePublished">2022-05-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/04/redis-%E4%BA%8B%E4%BB%B6/">redis-事件</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img13/bca47b9c9e7e80cd6f187f0b936ed6c7.png" alt="bca47b9c9e7e80cd6f187f0b936ed6c7.png"></p>
-        
-          <p class="article-more-link">
-            <a href="/2022/05/04/redis-%E4%BA%8B%E4%BB%B6/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/redis-%E4%BA%8B%E4%BB%B6/" data-id="cl2x5p30h001kmkvjgci5a9ha" data-title="redis-事件" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Redis复制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/04/Redis%E5%A4%8D%E5%88%B6/" class="article-date">
-  <time class="dt-published" datetime="2022-05-04T14:30:46.666Z" itemprop="datePublished">2022-05-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/04/Redis%E5%A4%8D%E5%88%B6/">Redis复制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><code>Redis复制</code></p>
-<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img12/3c68c8a047bda4c81a43f5f907284a06.png" alt="3c68c8a047bda4c81a43f5f907284a06.png"></p>
-        
-          <p class="article-more-link">
-            <a href="/2022/05/04/Redis%E5%A4%8D%E5%88%B6/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/Redis%E5%A4%8D%E5%88%B6/" data-id="cl2x5p2zp000fmkvjggvz2naf" data-title="Redis复制" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Redis哨兵" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/05/04/Redis%E5%93%A8%E5%85%B5/" class="article-date">
-  <time class="dt-published" datetime="2022-05-04T14:26:30.844Z" itemprop="datePublished">2022-05-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/05/04/Redis%E5%93%A8%E5%85%B5/">Redis哨兵</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><code>Redis哨兵</code></p>
-<p>启动哨兵</p>
-<ul>
-<li>redis-sentinel sentinel-端口号.conf</li>
-</ul>
-<p>sentinel.conf配置项</p>
-<ul>
-<li>sentinel &lt;自定义服务器名称&gt; &lt;主机地址&gt; &lt;端口号&gt; &lt;投票决定master客观下线sentinel数量&gt;</li>
-<li>sentinel down-after-milliseconds &lt;自定义服务器名称&gt; &lt;毫秒数&gt;</li>
-<li>sentinel parallel-syncs &lt;自定义服务器名称&gt; &lt;服务器数&gt;</li>
-<li>sentinel failover-timeout &lt;服务器名称&gt; &lt;毫秒数&gt; 进行故障转移时，从服务器重新同步新的主服务器的时间，超过这个时间则失败</li>
-</ul>
-        
-          <p class="article-more-link">
-            <a href="/2022/05/04/Redis%E5%93%A8%E5%85%B5/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/Redis%E5%93%A8%E5%85%B5/" data-id="cl2x5p2zh0008mkvj3l938byq" data-title="Redis哨兵" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/05/04/redis-%E5%AF%B9%E8%B1%A1/" data-id="cl2x7k5nq001yn4vjgeaz4zdj" data-title="redis-对象" class="article-share-link">Share</a>
       
       
       
@@ -541,7 +548,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -555,7 +562,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-se/" rel="tag">java se</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-se/" rel="tag">java se</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
     </div>
   </div>
 
@@ -565,7 +572,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/java-se/" style="font-size: 12px;">java se</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 18px;">多线程</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 14px;">计算机网络</a>
+      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/java-se/" style="font-size: 15px;">java se</a> <a href="/tags/jvm/" style="font-size: 11.67px;">jvm</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16.67px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 18.33px;">多线程</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 13.33px;">计算机网络</a>
     </div>
   </div>
 
@@ -587,23 +594,23 @@
       <ul>
         
           <li>
-            <a href="/2022/05/08/%E5%8F%8D%E5%B0%84/">反射</a>
+            <a href="/2022/05/08/MySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84/">MySQL是怎样运行的：从根儿上理解MySQL</a>
           </li>
         
           <li>
-            <a href="/2022/05/08/%E6%B3%9B%E5%9E%8B/">泛型</a>
+            <a href="/2022/05/08/Java-IO/">Java-IO</a>
           </li>
         
           <li>
-            <a href="/2022/05/08/%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D/">深拷贝和浅拷贝</a>
+            <a href="/2022/05/08/Java-NIO/">Java-NIO</a>
           </li>
         
           <li>
-            <a href="/2022/05/08/StringTable/">StringTable</a>
+            <a href="/2022/05/08/I-O%E6%A8%A1%E5%9E%8B/">I/O模型</a>
           </li>
         
           <li>
-            <a href="/2022/05/08/HTTPS/">HTTPS</a>
+            <a href="/2022/05/08/HashMap/">HashMap</a>
           </li>
         
       </ul>
