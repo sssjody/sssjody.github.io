@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>泛型 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、什么是泛型 1.背景： JAVA推出泛型以前，程序员可以构建一个元素类型为Object的集合，该集合能够存储任意的数据类型对象，而在使用该集合的过程中，需要程序员明确知道存储每个元素的数据类型，否则很容易引发ClassCastException异常。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="泛型">
+<meta property="og:url" content="http://example.com/2022/05/08/%E6%B3%9B%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、什么是泛型 1.背景： JAVA推出泛型以前，程序员可以构建一个元素类型为Object的集合，该集合能够存储任意的数据类型对象，而在使用该集合的过程中，需要程序员明确知道存储每个元素的数据类型，否则很容易引发ClassCastException异常。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/14d9fbcf8c5936f8fdb9b858abbb6f96.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/07ac934f74775162caec2da4cedd0f64.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/3c549866a6e6edbb095a80502faac0c8.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/8f94544c693947fba5a68aad9853e599.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/0d66db823bdc4376aa03eae17522e6d5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/b6241b880a42a340a7c9476e82672ea2.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/cdb49c78195f3e8dbfc8a5673999d1e7.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/11734a390167e8432b469fb8904f85c5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/1942805a725ca92e998cc74e98264c8b.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/863a94c93b0b025d90bd1d9c33b388be.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/be417f0d85902b56256f43cf052fe746.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/c6f2db77e7e4d753d2863c577a0de660.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/1f5a39eab068da4c5bb86d3071ab5380.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/3b4df664ec1a172a10f6a6b30f5f3336.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/3b82cd9adf75831a4015c63724daf8be.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/b59a026f6571dc9b30ec19919c5ef35a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/7612f59cc6055d2ed15921707b01585c.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/798eb713d21533ae78bc68ceae1c3b5a.png">
+<meta property="article:published_time" content="2022-05-08T10:11:47.317Z">
+<meta property="article:modified_time" content="2022-05-08T10:13:12.083Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="java se">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/14d9fbcf8c5936f8fdb9b858abbb6f96.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-泛型" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/08/%E6%B3%9B%E5%9E%8B/" class="article-date">
+  <time class="dt-published" datetime="2022-05-08T10:11:47.317Z" itemprop="datePublished">2022-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      泛型
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>一、什么是泛型</strong></p>
+<p>1.背景：</p>
+<p>JAVA推出泛型以前，程序员可以构建一个元素类型为Object的集合，该集合能够存储任意的数据类型对象，而在使用该集合的过程中，需要程序员明确知道存储每个元素的数据类型，否则很容易引发ClassCastException异常。</p>
+<span id="more"></span>
+<p>2.概念：</p>
+<p>Java泛型（generics）是JDK5中引入的一个新特性，泛型提供了编译时类型安全监测机制，该机制允许我们在编译时检测到非法的类型数据结构。泛型的本质就是参数化类型，也就是所操作的数据类型被指定为一个参数。</p>
+<p>3.好处：</p>
+<ul>
+<li>类型安全</li>
+<li>消除了强制类型的转换</li>
+</ul>
+<p>4.类型：</p>
+<p>E - Element (在集合中使用，因为集合中存放的是元素)</p>
+<p>T - Type（表示Java 类，包括基本的类和我们自定义的类）</p>
+<p>K - Key（表示键，比如Map中的key）</p>
+<p>V - Value（表示值）</p>
+<p>N - Number（表示数值类型）</p>
+<p>？ - （表示不确定的java类型）</p>
+<p>S、U、V - 2nd、3rd、4th types</p>
+<h2 id="二、泛型类、接口"><a href="#二、泛型类、接口" class="headerlink" title="二、泛型类、接口"></a><strong>二、泛型类、接口</strong></h2><h4 id="1-泛型类"><a href="#1-泛型类" class="headerlink" title="1.泛型类"></a><strong>1.泛型类</strong></h4><p>（1）使用语法</p>
+<p>类名&lt;具体的数据类型&gt; 对象名 &#x3D; new 类名&lt;具体的数据类型&gt;();</p>
+<p>（2）Java1.7以后，后面的&lt;&gt;中的具体的数据类型可以省略不写</p>
+<p>类名&lt;具体的数据类型&gt; 对象名 &#x3D; new 类名&lt;&gt;(); 菱形语法</p>
+<p><strong>2.泛型类注意事项：</strong></p>
+<p>泛型类，如果没有指定具体的数据类型，此时，操作类型是Object</p>
+<p>泛型的类型参数只能是类类型，不能是基本数据类型</p>
+<p>       泛型类型在逻辑上可以看成是多个不同的类型，但实际上都是相同类型</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/14d9fbcf8c5936f8fdb9b858abbb6f96.png" alt="14d9fbcf8c5936f8fdb9b858abbb6f96.png"></p>
+<h4 id="3-从泛型类派生子类"><a href="#3-从泛型类派生子类" class="headerlink" title="3.从泛型类派生子类"></a><strong>3.从泛型类派生子类</strong></h4><p>子类也是泛型类，子类和父类的泛型类型要一致</p>
+<p>class ChildGeneric&lt;T&gt; extends Generic&lt;T&gt;</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/07ac934f74775162caec2da4cedd0f64.png" alt="07ac934f74775162caec2da4cedd0f64.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/3c549866a6e6edbb095a80502faac0c8.png" alt="3c549866a6e6edbb095a80502faac0c8.png"></p>
+<h4 id="5-泛型接口的使用"><a href="#5-泛型接口的使用" class="headerlink" title="5.泛型接口的使用"></a><strong>5.泛型接口的使用</strong></h4><p>实现类也是泛型类，实现类和接口的泛型类型要一致</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/8f94544c693947fba5a68aad9853e599.png" alt="8f94544c693947fba5a68aad9853e599.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/0d66db823bdc4376aa03eae17522e6d5.png" alt="0d66db823bdc4376aa03eae17522e6d5.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/b6241b880a42a340a7c9476e82672ea2.png" alt="b6241b880a42a340a7c9476e82672ea2.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/cdb49c78195f3e8dbfc8a5673999d1e7.png" alt="cdb49c78195f3e8dbfc8a5673999d1e7.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/11734a390167e8432b469fb8904f85c5.png" alt="11734a390167e8432b469fb8904f85c5.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/1942805a725ca92e998cc74e98264c8b.png" alt="1942805a725ca92e998cc74e98264c8b.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/863a94c93b0b025d90bd1d9c33b388be.png" alt="863a94c93b0b025d90bd1d9c33b388be.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/be417f0d85902b56256f43cf052fe746.png" alt="be417f0d85902b56256f43cf052fe746.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/c6f2db77e7e4d753d2863c577a0de660.png" alt="c6f2db77e7e4d753d2863c577a0de660.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/1f5a39eab068da4c5bb86d3071ab5380.png" alt="1f5a39eab068da4c5bb86d3071ab5380.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/3b4df664ec1a172a10f6a6b30f5f3336.png" alt="3b4df664ec1a172a10f6a6b30f5f3336.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/3b82cd9adf75831a4015c63724daf8be.png" alt="3b82cd9adf75831a4015c63724daf8be.png"></p>
+<ul>
+<li>无限制类型擦除    &lt;? super T&gt; 则会把泛型擦除为Object</li>
+</ul>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/b59a026f6571dc9b30ec19919c5ef35a.png" alt="b59a026f6571dc9b30ec19919c5ef35a.png"></p>
+<ul>
+<li>有限制类型擦除</li>
+</ul>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/7612f59cc6055d2ed15921707b01585c.png" alt="7612f59cc6055d2ed15921707b01585c.png"></p>
+<ul>
+<li>擦除方法中类型定义的参数</li>
+</ul>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img74/798eb713d21533ae78bc68ceae1c3b5a.png" alt="798eb713d21533ae78bc68ceae1c3b5a.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/08/%E6%B3%9B%E5%9E%8B/" data-id="cl2x5p31g002vmkvjg0oja8ns" data-title="泛型" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java-se/" rel="tag">java se</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/08/%E5%8F%8D%E5%B0%84/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          反射
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/08/%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">深拷贝和浅拷贝</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-se/" rel="tag">java se</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/java-se/" style="font-size: 12px;">java se</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 18px;">多线程</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 14px;">计算机网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/08/%E5%8F%8D%E5%B0%84/">反射</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E6%B3%9B%E5%9E%8B/">泛型</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D/">深拷贝和浅拷贝</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/StringTable/">StringTable</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/HTTPS/">HTTPS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

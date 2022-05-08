@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>StringTable | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="字面量创建 123public static void main(String[] args) &amp;#123;    String s &#x3D; &quot;abc&quot;;&amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="StringTable">
+<meta property="og:url" content="http://example.com/2022/05/08/StringTable/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="字面量创建 123public static void main(String[] args) &amp;#123;    String s &#x3D; &quot;abc&quot;;&amp;#125;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/cb0c768f9469a83fcccac034cb3cebdf.jfif">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/78abfb35a49bdaa1159bff1ca0a2415d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/a241dd31e73dc38a0bfe52d756c23c7e.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/55df022eec3a4fa04c799305128c2ab1.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/36f909f7f5ada62b964ba761b37063bb.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/9c10a367dbee4f064092d33fa0b45ce1.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/4a90c60e35714551e244e31c2e435333.png">
+<meta property="article:published_time" content="2022-05-08T09:53:04.123Z">
+<meta property="article:modified_time" content="2022-05-08T10:05:44.034Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="java se">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/cb0c768f9469a83fcccac034cb3cebdf.jfif">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-StringTable" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/08/StringTable/" class="article-date">
+  <time class="dt-published" datetime="2022-05-08T09:53:04.123Z" itemprop="datePublished">2022-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      StringTable
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>字面量创建</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>“abc” 被叫做字符串字面量（英文 Literal），但恰恰是这种方式其实奥妙最多，我总结了三点：非对象、懒加载、不重复。来逐一看一下</p>
+<p><strong>非对象</strong></p>
+<p>严格地说，字面量在代码运行到它所在语句之前，它还<strong>不是字符串对象</strong></p>
+<p>要理解从字面量变成字符串对象的过程，需要从字节码的角度来分析</p>
+<p>在上面的 java 代码被编译为 class 文件后，”abc” 存储于【类文件常量池】中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Constant pool: <span class="comment">// 常量池</span></span><br><span class="line">#<span class="number">1</span> = Methodref #<span class="number">19.</span>#<span class="number">41</span> <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">#<span class="number">2</span> = String #<span class="number">42</span> <span class="comment">// abc</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>当 class 完成类加载之后，”abc” 这个字面量被存储于【运行时常量池】（归属于方法区）中，其中 #1 #2 都会被翻译为运行时真正的内存地址</p>
+<p>再看一下 class 中 main 方法的字节码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>; <span class="comment">// 字节码指令</span></span><br><span class="line">descriptor: ([Ljava/lang/String;)V</span><br><span class="line">flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">Code:</span><br><span class="line">stack=<span class="number">1</span>, locals=<span class="number">2</span>, args_size=<span class="number">1</span></span><br><span class="line"><span class="number">0</span>: ldc #<span class="number">2</span> <span class="comment">// String abc</span></span><br><span class="line"><span class="number">2</span>: astore_1</span><br><span class="line"><span class="number">3</span>: <span class="keyword">return</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>将来 main 方法被调用时，就会执行里面的字节码指令</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>: ldc #<span class="number">2</span> <span class="comment">// String abc</span></span><br><span class="line"><span class="number">2</span>: astore_1</span><br><span class="line"><span class="number">3</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+
+<p>ldc #2 就是到运行时常量池中找到 #2 的内存地址，找到 “abc” 这个字面量，再根据它创建一个 String 对象。</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/cb0c768f9469a83fcccac034cb3cebdf.jfif" alt="cb0c768f9469a83fcccac034cb3cebdf.jfif"></p>
+<p><strong>懒加载</strong></p>
+<p>当第一次用到 “abc” 字面量时（也就是执行到 ldc #2 时） ，才会创建对应的字符串对象</p>
+<p>如何验证呢？</p>
+<p>例如有如下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">System.out.println();System.out.println(<span class="string">&quot;1&quot;</span>); <span class="comment">// 断点1 2411</span></span><br><span class="line">System.out.println(<span class="string">&quot;2&quot;</span>); <span class="comment">// 断点2 2412</span></span><br><span class="line">System.out.println(<span class="string">&quot;3&quot;</span>); <span class="comment">// 断点3</span></span><br></pre></td></tr></table></figure>
+
+<p>可以给每行语句加上断点，然后用 idea 的 debug 界面中的 memory 工具来查看字符串对象的数量</p>
+<p>刚开始在断点1 处，其它类中创建的字符串对象有 2411 个</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/78abfb35a49bdaa1159bff1ca0a2415d.png" alt="78abfb35a49bdaa1159bff1ca0a2415d.png"></p>
+<p>执行到断点2 处，这时新创建了 “1” 对应的字符串对象，个数为 2412</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/a241dd31e73dc38a0bfe52d756c23c7e.png" alt="a241dd31e73dc38a0bfe52d756c23c7e.png"></p>
+<p>执行到断点3 处，这时新创建了 “2” 对应的字符串对象，个数为 2413</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/55df022eec3a4fa04c799305128c2ab1.png" alt="55df022eec3a4fa04c799305128c2ab1.png"></p>
+<p><strong>不重复</strong></p>
+<p>同一个类中的值相同字面量，其实只有一份</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestString1</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">       <span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">       <span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>常量池为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Constant pool:</span><br><span class="line">#<span class="number">1</span> = Methodref #<span class="number">25.</span>#<span class="number">48</span> <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">#<span class="number">2</span> = String #<span class="number">49</span> <span class="comment">// abc</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>对应的字节码为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">descriptor: ([Ljava/lang/String;)V</span><br><span class="line">flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">Code:</span><br><span class="line">stack=<span class="number">1</span>, locals=<span class="number">3</span>, args_size=<span class="number">1</span></span><br><span class="line"><span class="number">0</span>: ldc #<span class="number">2</span> <span class="comment">// String abc</span></span><br><span class="line"><span class="number">2</span>: astore_1</span><br><span class="line"><span class="number">3</span>: ldc #<span class="number">2</span> <span class="comment">// String abc</span></span><br><span class="line"><span class="number">5</span>: astore_2</span><br><span class="line"><span class="number">6</span>: <span class="keyword">return</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 “abc” 这个字面量虽然出现了 2 次，但实际上都是对应着常量池中 #2 这个地址</p>
+<p>如果是不同类中的 “abc” 呢？【类文件常量池】包括【运行时常量池】都是以类为单位的</p>
+<p>例如，另一个类中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestString2</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span>;</span><br><span class="line">    <span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的常量池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Constant pool:</span><br><span class="line">#<span class="number">1</span> = Methodref #<span class="number">5.</span>#<span class="number">22</span> <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">#<span class="number">2</span> = String #<span class="number">23</span> <span class="comment">// a</span></span><br><span class="line">#<span class="number">3</span> = String #<span class="number">24</span> <span class="comment">// abc</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到在这个类中，”abc” 对应的常量池的编号是 #3，与 TestString1 中的已经不同</p>
+<p><strong>拼接创建</strong></p>
+<p>最后还可以通过 + 运算符将两个字符串（其中一个也可以是其它类型）拼接为一个新字符串，例如</p>
+<p>例1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + <span class="string">&quot;b&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>例2</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;<span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + x;</span><br></pre></td></tr></table></figure>
+
+<p>例3</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;<span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + x;</span><br></pre></td></tr></table></figure>
+
+<p>例4</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>有同学会问，例1与例2与例3 不同吗？还别说，真就不同，其中例1 与例2 原理是一样的，例3 与例4 原理是一样的，反编译一下</p>
+<p>例1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + <span class="string">&quot;b&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>常量池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Constant pool:</span><br><span class="line">#<span class="number">1</span> = Methodref #<span class="number">4.</span>#<span class="number">20</span> <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">#<span class="number">2</span> = String #<span class="number">21</span> <span class="comment">// ab</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>主方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">descriptor: ([Ljava/lang/String;)V</span><br><span class="line">flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">Code:</span><br><span class="line">stack=<span class="number">1</span>, locals=<span class="number">2</span>, args_size=<span class="number">1</span></span><br><span class="line"><span class="number">0</span>: ldc #<span class="number">2</span> <span class="comment">// String ab</span></span><br><span class="line"><span class="number">2</span>: astore_1</span><br><span class="line"><span class="number">3</span>: <span class="keyword">return</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，其实并没有真正的【拼接】操作发生，从源码编译为字节码时，javac 就已经把 “a” 和 “b” 串在一起了，这是一种编译期的优化处理</p>
+<p>例2</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;<span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + x;</span><br></pre></td></tr></table></figure>
+
+<p>常量池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Constant pool:</span><br><span class="line">#<span class="number">1</span> = Methodref #<span class="number">5.</span>#<span class="number">22</span> <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">#<span class="number">2</span> = String #<span class="number">23</span> <span class="comment">// b</span></span><br><span class="line">#<span class="number">3</span> = String #<span class="number">24</span> <span class="comment">// ab</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>主方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">descriptor: ([Ljava/lang/String;)V</span><br><span class="line">flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">Code:</span><br><span class="line">stack=<span class="number">1</span>, locals=<span class="number">3</span>, args_size=<span class="number">1</span></span><br><span class="line"><span class="number">0</span>: ldc #<span class="number">2</span> <span class="comment">// String b final b</span></span><br><span class="line"><span class="number">2</span>: astore_1</span><br><span class="line"><span class="number">3</span>: ldc #<span class="number">3</span> <span class="comment">// String ab</span></span><br><span class="line"><span class="number">5</span>: astore_2</span><br><span class="line"><span class="number">6</span>: <span class="keyword">return</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，还是没有真正的【拼接】操作发生，final 意味着 x 的值不可改变，因此其它引用 x 的地方都可以安全地被替换为 “b”，而不用担心 x 被改变，从源码编译为字节码时，javac 就也进行了优化，把所有出现 x 的地方都替换成为了 “b”</p>
+<p>那么，什么是真正的【拼接】操作呢？看一下例3 反编译后的结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;<span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + x;</span><br></pre></td></tr></table></figure>
+
+<p>常量池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Constant pool:</span><br><span class="line">#<span class="number">1</span> = Methodref #<span class="number">9.</span>#<span class="number">26</span> <span class="comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">#<span class="number">2</span> = String #<span class="number">27</span> <span class="comment">// b</span></span><br><span class="line">#<span class="number">3</span> = Class #<span class="number">28</span> <span class="comment">// java/lang/StringBuilder</span></span><br><span class="line">#<span class="number">4</span> = Methodref #<span class="number">3.</span>#<span class="number">26</span> <span class="comment">// java/lang/StringBuilder.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">#<span class="number">5</span> = String #<span class="number">29</span> <span class="comment">// a</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>可以看到常量池中并没有 ab 字面量</p>
+<p>主方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(java.lang.String[])</span>;</span><br><span class="line">descriptor: ([Ljava/lang/String;)V</span><br><span class="line">flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">Code:</span><br><span class="line">stack=<span class="number">2</span>, locals=<span class="number">3</span>, args_size=<span class="number">1</span></span><br><span class="line"><span class="number">0</span>: ldc #<span class="number">2</span> <span class="comment">// String b</span></span><br><span class="line"><span class="number">2</span>: astore_1</span><br><span class="line"><span class="number">3</span>: <span class="keyword">new</span> #<span class="number">3</span> <span class="comment">// class java/lang/StringBuilder</span></span><br><span class="line"><span class="number">6</span>: dup</span><br><span class="line"><span class="number">7</span>: invokespecial #<span class="number">4</span> <span class="comment">// Method java/lang/StringBuilder.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line"><span class="number">10</span>: ldc #<span class="number">5</span> <span class="comment">// String a</span></span><br><span class="line"><span class="number">12</span>: invokevirtual #<span class="number">6</span> <span class="comment">// Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span></span><br><span class="line"><span class="number">15</span>: aload_1</span><br><span class="line"><span class="number">16</span>: invokevirtual #<span class="number">6</span> <span class="comment">// Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span></span><br><span class="line"><span class="number">19</span>: invokevirtual #<span class="number">7</span> <span class="comment">// Method java/lang/StringBuilder.toString:()Ljava/lang/String;</span></span><br><span class="line"><span class="number">22</span>: astore_2</span><br><span class="line"><span class="number">23</span>: <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+
+<p>翻译成人能读懂的就是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;<span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;a&quot;</span> + x;</span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="string">&quot;b&quot;</span>;<span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>().append(<span class="string">&quot;a&quot;</span>).append(x).toString();</span><br></pre></td></tr></table></figure>
+
+<p>StringBuilder 的 toString() 方法又是怎么实现的呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">StringBuilder</span> <span class="keyword">extends</span> <span class="title class_">AbstractStringBuilder</span></span><br><span class="line">      <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable, CharSequence &#123;</span><br><span class="line">  <span class="comment">// 从 AbstractStringBuilder 继承的属性，方便阅读加在此处</span></span><br><span class="line">  <span class="type">char</span>[] value;</span><br><span class="line"> </span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="comment">// Create a copy, don&#x27;t share the array</span></span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(value, <span class="number">0</span>, count);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，本质上就是根据 StringBuilder 维护的 char[] 创建了新的 String 对象</p>
+<h2 id="字符串之家-StringTable"><a href="#字符串之家-StringTable" class="headerlink" title="字符串之家 - StringTable"></a><strong>字符串之家 - StringTable</strong></h2><h3 id="家养与野生"><a href="#家养与野生" class="headerlink" title="家养与野生"></a><strong>家养与野生</strong></h3><blockquote>
+<p><em>京城何日多灯火，让星也羞臊。时有弦月清冷，照我无聊</em> - 米人《夜辍香山》</p>
+</blockquote>
+<p>其实字符串也一样，分为家养的和野生的。</p>
+<p>前面我们讲解了 String 的六种创建方式，除了字面量方式创建的字符串是家养的以外，其它方法创建的字符串都是野生的。什么意思呢？</p>
+<ul>
+<li>字面量方式创建的字符串，会放入 StringTable 中，StringTable 管理的字符串，才具有不重复的特性，这种就像是家养的</li>
+<li>而 char[]，byte[]，int[]，String，以及 + 方式本质上都是使用 new 来创建，它们都是在堆中创建新的字符串对象，不会考虑字符串重不重复，这种就像是野生的，野生字符串的缺点就是如果存在大量值相同的字符串，对内存占用非常严重</li>
+</ul>
+<p>如何保证家养的字符串对象不重复呢？JDK 使用了 StringTable 来解决，StringTable 是采用 c++ 代码编写的，数据结构上就是一个 hash 表，字符串对象就充当 hash 表中的 key，key 的不重复性，是 hash 表的基本特性</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/36f909f7f5ada62b964ba761b37063bb.png" alt="36f909f7f5ada62b964ba761b37063bb.png"></p>
+<p>当代码运行到一个字面量 “abc” 时，会首先检查 StringTable 中有没有相同的 key，如果没有，创建新字符串对象加入；否则直接返回已有的字符串对象</p>
+<p>野生的字符串也有机会得到教育</p>
+<p>字符串提供了 intern 方法来实现去重，让字符串对象有机会受到 StringTable 的管理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">native</span> String <span class="title function_">intern</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<p>它会尝试将调用者放入 StringTable</p>
+<h3 id="如果-StringTable-中已有"><a href="#如果-StringTable-中已有" class="headerlink" title="如果 StringTable 中已有"></a><strong>如果 StringTable 中已有</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> ...;</span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> x.intern();</span><br></pre></td></tr></table></figure>
+
+<p>总会返回家养的 String 对象</p>
+<p>例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="keyword">new</span> <span class="title class_">char</span>[]&#123;<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>&#125;); <span class="comment">// 野生的</span></span><br><span class="line"><span class="type">String</span> <span class="variable">y</span> <span class="operator">=</span> <span class="string">&quot;abc&quot;</span>; <span class="comment">// 将 &quot;abc&quot; 加入 StringTable</span></span><br><span class="line"><span class="type">String</span> <span class="variable">z</span> <span class="operator">=</span> x.intern(); <span class="comment">// 已有，返回 StringTable 中 &quot;abc&quot;，即 y</span></span><br><span class="line">System.out.println(z == y);System.out.println(z == x);</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="如果-StringTable-中没有（1-7-以上-JDK-的做法）"><a href="#如果-StringTable-中没有（1-7-以上-JDK-的做法）" class="headerlink" title="如果 StringTable 中没有（1.7 以上 JDK 的做法）"></a><strong>如果 StringTable 中没有（1.7 以上 JDK 的做法）</strong></h3><p>例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="keyword">new</span> <span class="title class_">char</span>[]&#123;<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>&#125;); <span class="comment">// 野生的</span></span><br><span class="line"><span class="type">String</span> <span class="variable">z</span> <span class="operator">=</span> x.intern(); <span class="comment">// 野生的 x 加入 StringTable，StringTable 中有了 &quot;abc&quot;</span></span><br><span class="line"><span class="type">String</span> <span class="variable">y</span> <span class="operator">=</span> <span class="string">&quot;abc&quot;</span>; <span class="comment">// 已有，不会产生新的对象，用的是 StringTable 中 &quot;abc&quot;</span></span><br><span class="line">System.out.println(z == x);</span><br><span class="line">System.out.println(z == y);</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="如果-StringTable-中没有（1-6-JDK-的做法）"><a href="#如果-StringTable-中没有（1-6-JDK-的做法）" class="headerlink" title="如果 StringTable 中没有（1.6 JDK 的做法）"></a><strong>如果 StringTable 中没有（1.6 JDK 的做法）</strong></h3><p>例子，代码同上面 1.7 相同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">x</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="keyword">new</span> <span class="title class_">char</span>[]&#123;<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>&#125;); <span class="comment">// 野生的</span></span><br><span class="line"><span class="type">String</span> <span class="variable">z</span> <span class="operator">=</span> x.intern(); <span class="comment">// 野生的 x 被复制后加入 StringTable，StringTable 中有了 &quot;abc&quot;</span></span><br><span class="line"><span class="type">String</span> <span class="variable">y</span> <span class="operator">=</span> <span class="string">&quot;abc&quot;</span>; <span class="comment">// 已有，不会产生新的对象，用的是 StringTable 中 &quot;abc&quot;</span></span><br><span class="line">System.out.println(z == x);</span><br><span class="line">System.out.println(z == y);</span><br></pre></td></tr></table></figure>
+
+<p>输出  false  true</p>
+<p><strong>StringTable 的位置（1.6）</strong></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/9c10a367dbee4f064092d33fa0b45ce1.png" alt="9c10a367dbee4f064092d33fa0b45ce1.png"></p>
+<p><strong>StringTable 的位置（1.8）</strong></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img72/4a90c60e35714551e244e31c2e435333.png" alt="4a90c60e35714551e244e31c2e435333.png"></p>
+<p>如何证明</p>
+<ul>
+<li>1.6 不断将字符串用 intern 加入 StringTable，最后撑爆的是永久代内存，为了让错误快速出现，将永久代内存设置的小一些：-XX:MaxPermSize&#x3D;10m，最终会出现 java.lang.OutOfMemoryError: PermGen space</li>
+<li>1.8 不断将字符串用 intern 加入 StringTable，最后撑爆的是堆内存，为了让错误快速出现，将堆内存设置的小一些：-Xmx10m -XX:-UseGCOverheadLimit 后一个虚拟机参数是避免 GC 频繁引起其他错误而不是我们期望的 java.lang.OutOfMemoryError: Java heap space</li>
+</ul>
+<p>相信很多 JAVA 程序员都做做类似 String s &#x3D; new String(“abc”)这个语句创建了几个对象的题目。 这种题目主要就是为了考察程序员对字符串对象的常量池掌握与否。上述的语句中是创建了2个对象，第一个对象是”abc”字符串存储在常量池中，第二个对象在JAVA Heap中的 String 对象。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/08/StringTable/" data-id="cl2x5p2zv000lmkvj91u0faw5" data-title="StringTable" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java-se/" rel="tag">java se</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/08/%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          深拷贝和浅拷贝
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/08/HTTPS/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HTTPS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-se/" rel="tag">java se</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/java-se/" style="font-size: 12px;">java se</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 18px;">多线程</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 14px;">计算机网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/08/%E5%8F%8D%E5%B0%84/">反射</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E6%B3%9B%E5%9E%8B/">泛型</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D/">深拷贝和浅拷贝</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/StringTable/">StringTable</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/HTTPS/">HTTPS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
