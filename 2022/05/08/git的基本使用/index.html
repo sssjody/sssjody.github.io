@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/6c4f659fa35169c052e444cb40486241.png">
 <meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/e27c57dceed2d44e0712afc4d48e6fdb.png">
 <meta property="article:published_time" content="2022-05-08T04:39:11.521Z">
-<meta property="article:modified_time" content="2022-05-08T04:39:49.311Z">
+<meta property="article:modified_time" content="2022-05-08T09:51:12.567Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
@@ -157,8 +157,8 @@
 <p>  git commit -m ‘注释内容’</p>
 <p>  提交暂存区内容到本地仓库的当前分支</p>
 <p><strong>4.4  查看提交日志</strong></p>
-<p>**  git log [option]**</p>
-<p>**  options主要有**</p>
+<p><strong>git log [option]</strong></p>
+<p><strong>options主要有</strong></p>
 <ul>
 <li><strong>--all  显示所有分支</strong></li>
 <li><strong>--pretty&#x3D;online 将提交信息显示为一行</strong></li>
@@ -178,19 +178,19 @@
 <p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/5050ed842b13511e64abf39697bfb30f.png" alt="5050ed842b13511e64abf39697bfb30f.png"></strong></p>
 <p><strong>5 分支</strong></p>
 <p><strong>5.1 查看本地分支</strong></p>
-<p>**  git branch**</p>
+<p><strong>git branch</strong></p>
 <p><strong>5.2 创建本地分支</strong></p>
-<p>**  git branch 分支名**</p>
+<p><strong>git branch 分支名</strong></p>
 <p><strong>5.3 切换分支</strong></p>
-<p>**  git checkout 分支名**</p>
-<p>**  还可以直接切换到一个不存在的分支(即创建并切换)**</p>
-<p>**  git checkout -b 分支名**</p>
+<p><strong>git checkout 分支名</strong></p>
+<p><strong>还可以直接切换到一个不存在的分支(即创建并切换)</strong></p>
+<p><strong>git checkout -b 分支名</strong></p>
 <p><strong>5.4 合并分支</strong></p>
-<p>**  一个分支上的提交commit可以合并到另外一个分支上面**</p>
-<p>**  git merge 分支名称(一般是将分支名称合并到执行git merge命令所在的分支上面)**</p>
+<p><strong>一个分支上的提交commit可以合并到另外一个分支上面</strong></p>
+<p><strong>git merge 分支名称(一般是将分支名称合并到执行git merge命令所在的分支上面)</strong></p>
 <p><strong>5.5 删除分支</strong></p>
-<p>**  git branch -d 分支名  删除分支时需要各种检查**</p>
-<p>**  git branch -D 分支名 不做任何检查，强制删除**</p>
+<p><strong>git branch -d 分支名  删除分支时需要各种检查</strong></p>
+<p><strong>git branch -D 分支名 不做任何检查，强制删除</strong></p>
 <p><strong>5.6 解决冲突</strong></p>
 <p>  当两个分支上对文件的修改可能会存在冲突，例如同时修改了同一个文件的同一行，这时就需要手动解</p>
 <p>决冲突，解决冲突步骤如下：</p>
@@ -204,18 +204,18 @@
 <p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/b36631d5466acd3335ec03680cfd3da8.png" alt="b36631d5466acd3335ec03680cfd3da8.png"></p>
 <p><strong>6 操作远程仓库</strong></p>
 <p><strong>6.1 添加远程仓库</strong></p>
-<p>**  这个操作先初始化本地库，然后和已经创建的远程库进行对接**</p>
-<p>**  git remote add &lt;远端名称&gt;  &lt;远端仓库路径&gt;**</p>
+<p><strong>这个操作先初始化本地库，然后和已经创建的远程库进行对接</strong></p>
+<p><strong>git remote add &lt;远端名称&gt;  &lt;远端仓库路径&gt;</strong></p>
 <ul>
 <li><strong>远端名称：默认为origin，取决于远端服务器的设置</strong></li>
 <li><strong>远端仓库路径：从远端服务器获取URL</strong></li>
-<li><strong>例如：git remote add origin <a href="mailto:&#x67;&#105;&#x74;&#64;&#x67;&#x69;&#116;&#x65;&#x65;&#46;&#99;&#x6f;&#109;">&#x67;&#105;&#x74;&#64;&#x67;&#x69;&#116;&#x65;&#x65;&#46;&#99;&#x6f;&#109;</a>:czbk_zhang&#x2F;git_test.git</strong></li>
+<li><strong>例如：git remote add origin <a href="mailto:&#x67;&#105;&#116;&#64;&#x67;&#105;&#116;&#101;&#x65;&#x2e;&#x63;&#111;&#109;">&#x67;&#105;&#116;&#64;&#x67;&#105;&#116;&#101;&#x65;&#x2e;&#x63;&#111;&#109;</a>:czbk_zhang&#x2F;git_test.git</strong></li>
 </ul>
 <p><strong>6.2 查看远程仓库</strong></p>
-<p>**   git remote**</p>
+<p><strong>git remote</strong></p>
 <p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/6c4f659fa35169c052e444cb40486241.png" alt="6c4f659fa35169c052e444cb40486241.png"></strong></p>
 <p><strong>6.3 推送到远程仓库</strong></p>
-<p>**   命令：git push [-f] [--set-upstream] [远端名称 [本地分支名][：远端分支名]]**</p>
+<p><strong>命令：git push [-f] [--set-upstream] [远端名称 [本地分支名][：远端分支名]]</strong></p>
 <ul>
 <li><strong>git push origin master  如果本地分支名和远端分支名相同，则可以只写本地分支</strong></li>
 <li><strong>-f 表示强制覆盖</strong></li>
@@ -223,17 +223,17 @@
 <li><strong>如果当前分支和远端分支关联，则可以省略分支名和远端名称 如</strong></li>
 </ul>
 <p><strong>6.4  查看本地分支和远程分支的关联关系</strong></p>
-<p>**   git branch -vv**</p>
+<p><strong>git branch -vv</strong></p>
 <p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/e27c57dceed2d44e0712afc4d48e6fdb.png" alt="e27c57dceed2d44e0712afc4d48e6fdb.png"></strong></p>
 <p><strong>6.5 从远程仓库克隆</strong></p>
 <p>   <strong>如果已经有一个远端仓库，我们可以直接clone到本地</strong></p>
 <p>   <strong>git clone &lt;仓库路径&gt; [本地目录]</strong></p>
-<p>**   本地目录可以省略，会自动生成一个目录**</p>
+<p><strong>本地目录可以省略，会自动生成一个目录</strong></p>
 <p><strong>6.6 从远程仓库fetch和pull</strong></p>
 <p>   </p>
-<p>   <strong>远程分支和本地的分支一样，我们可以进行merge操作，只是需要先把远端仓库里的更新都下载到本****地(相当于在本地新创建了一个分支-远端分支)，再进行操作</strong></p>
+<p>   <strong>远程分支和本地的分支一样，我们可以进行merge操作，只是需要先把远端仓库里的更新都下载到本地(相当于在本地新创建了一个分支-远端分支)，再进行操作</strong></p>
 <ul>
-<li><strong>git fetch [remote name] [branch name]�</strong>�</li>
+<li><strong>git fetch [remote name] [branch name]</strong></li>
 <li><strong>指令就是将仓库里的更新都抓取到本地，不会进行合并，</strong></li>
 <li><strong>git pull [remote name] [branch name]</strong></li>
 <li><strong>指令就是将远端仓库的修改拉到本地并自动进行合并，等同于fetch+merge</strong></li>
@@ -241,13 +241,13 @@
 </ul>
 <p>  </p>
 <p><strong>6.7 合并冲突</strong></p>
-<p>   <strong>在一段时间，A、B用户修改了同一个文件，且修改了同一行位置的代码，此时会发生合并冲突，<strong><strong>A用户在本地修改代码后优先推送到远程仓库，此时B用户在本地修订代码，提交到本地仓库后，也需要</strong></strong>推送到远程仓库，此时B用户晚于A用户，故需要先拉取远程仓库的提交，经过合并后才能推送到远端分****支。</strong></p>
-<p>   <strong>在B用户拉取代码时，因为A、B用户同一段时间修改了同一个文件的相同位置代码，故会发生合并冲<strong><strong>突，</strong></strong>远程分支也是分支，所以合并时冲突的解决方式也和解决本地分支冲突相同相同。</strong></p>
+<p>   <strong>在一段时间，A、B用户修改了同一个文件，且修改了同一行位置的代码，此时会发生合并冲突，A用户在本地修改代码后优先推送到远程仓库，此时B用户在本地修订代码，提交到本地仓库后，也需要推送到远程仓库，此时B用户晚于A用户，故需要先拉取远程仓库的提交，经过合并后才能推送到远端分支</strong></p>
+<p>   <strong>在B用户拉取代码时，因为A、B用户同一段时间修改了同一个文件的相同位置代码，故会发生合并冲突，远程分支也是分支，所以合并时冲突的解决方式也和解决本地分支冲突相同相同。</strong></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/08/git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="cl2x43lhj000yksvj28y53rm1" data-title="git的基本使用" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/05/08/git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="cl2x48mou000z4kvjgipc7z82" data-title="git的基本使用" class="article-share-link">Share</a>
       
       
       
