@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>git的基本使用 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1.开发中的实际场景">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git的基本使用">
+<meta property="og:url" content="http://example.com/2022/05/08/git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.开发中的实际场景">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/7830b3b5ff34c12094c20d425a4fb522.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/2d226ff5158bd66d4ff00fc5314f50dd.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/102bf4e578b524959afa4693fa9ed0ea.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/cffa7b01b943610d0aee2cfc9e5b832f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/974c96a90249558639cb953595b6317c.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/a16262c5eaa71f1a8afbd17ee4451db6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/0f7bacbb5fb9d6fa31dc3d2481dc21e6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/5050ed842b13511e64abf39697bfb30f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/f624aa2581dded8781e409859eb9b68a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/28814da1a2980bfbfa8c965f950f1181.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/b36631d5466acd3335ec03680cfd3da8.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/6c4f659fa35169c052e444cb40486241.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/e27c57dceed2d44e0712afc4d48e6fdb.png">
+<meta property="article:published_time" content="2022-05-08T04:39:11.521Z">
+<meta property="article:modified_time" content="2022-05-08T04:39:49.311Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/7830b3b5ff34c12094c20d425a4fb522.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-git的基本使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/08/git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2022-05-08T04:39:11.521Z" itemprop="datePublished">2022-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      git的基本使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>1.开发中的实际场景</strong></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/7830b3b5ff34c12094c20d425a4fb522.png" alt="7830b3b5ff34c12094c20d425a4fb522.png"></p>
+<span id="more"></span>
+<p><strong>2.Gi的工作流程</strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/2d226ff5158bd66d4ff00fc5314f50dd.png" alt="2d226ff5158bd66d4ff00fc5314f50dd.png"></strong></p>
+<ol>
+<li>clone（克隆）: 从远程仓库中克隆代码到本地仓库</li>
+</ol>
+<p>2.checkout （检出）：从本地仓库中检出一个仓库分支然后进行修订</p>
+<ol start="3">
+<li><p>add（添加）: 在提交前先将代码提交到暂存区</p>
+</li>
+<li><p>commit（提交）: 提交到本地仓库。本地仓库中保存修改的各个历史版本</p>
+</li>
+<li><p>fetch (抓取) ：从远程库，抓取到本地仓库，不进行任何的合并动作，一般操作比较少</p>
+</li>
+<li><p>pull (拉取) ：从远程库拉到本地库，自动进行合并(merge)，然后放到到工作区，相当于fetch+merge</p>
+</li>
+<li><p>push（推送） : 修改完成后，需要和团队成员共享代码时，将代码推送到远程仓库</p>
+</li>
+</ol>
+<p><strong>3.获取本地仓库</strong></p>
+<p>要使用Git对我们的代码进行版本控制，首先需要获得本地仓库</p>
+<p>1）在电脑的任意位置创建一个空目录（例如test）作为我们的本地Git仓库</p>
+<p>2）进入这个目录中，点击右键打开Git bash窗口</p>
+<p>3）执行命令git init</p>
+<p>4）如果创建成功后可在文件夹下看到隐藏的.git目录</p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/102bf4e578b524959afa4693fa9ed0ea.png" alt="102bf4e578b524959afa4693fa9ed0ea.png"></strong></p>
+<p><strong>4.基础操作指令</strong></p>
+<p>Git工作目录下对于文件的<strong>修改</strong>(增加、删除、更新)会存在几个状态，这些<strong>修改</strong>的状态会随着我们执行Git的命令而发生变化</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/cffa7b01b943610d0aee2cfc9e5b832f.png" alt="cffa7b01b943610d0aee2cfc9e5b832f.png"></p>
+<ol>
+<li><p>git add (工作区 --&gt; 暂存区)</p>
+</li>
+<li><p>git commit (暂存区 --&gt; 本地仓库)</p>
+</li>
+</ol>
+<p><strong>4.1 查看修改的状态</strong></p>
+<p>    git status   查看修改的状态</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/974c96a90249558639cb953595b6317c.png" alt="974c96a90249558639cb953595b6317c.png"></p>
+<p><strong>4.2 添加工作区到暂存区</strong></p>
+<p>  git add  单个文件名 | 通配符</p>
+<p>  git add . 将所有修改加入暂存区</p>
+<p><strong>4.3  提交暂存区到本地仓库</strong></p>
+<p>  git commit -m ‘注释内容’</p>
+<p>  提交暂存区内容到本地仓库的当前分支</p>
+<p><strong>4.4  查看提交日志</strong></p>
+<p>**  git log [option]**</p>
+<p>**  options主要有**</p>
+<ul>
+<li><strong>--all  显示所有分支</strong></li>
+<li><strong>--pretty&#x3D;online 将提交信息显示为一行</strong></li>
+<li><strong>--abbrev-commit 使得输出的commitId更简短</strong></li>
+<li><strong>--graph 以图的形式显示</strong></li>
+</ul>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/a16262c5eaa71f1a8afbd17ee4451db6.png" alt="a16262c5eaa71f1a8afbd17ee4451db6.png"></strong></p>
+<p><strong>其中红色下划线表示的是commitId，HEAD指向的是当前分支，当前分支为master</strong></p>
+<p><strong>4.5 版本回退</strong></p>
+<p><strong>git reset --hard commitId</strong></p>
+<p><strong>commitId可以使用git log查看</strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/0f7bacbb5fb9d6fa31dc3d2481dc21e6.png" alt="0f7bacbb5fb9d6fa31dc3d2481dc21e6.png"></strong></p>
+<p><strong>使用git reset可以将HEAD从当前分支上面的commitId退回到任意之前的commitId即版本上面</strong></p>
+<p><strong>git reflog可以查看所有commit记录，防止使用git reset回退到以前的版本从而导致当前版本丢失</strong></p>
+<p><strong>4.6 添加文件到忽略列表</strong></p>
+<p>  <strong>一般我们总会有些文件无需纳入<strong><strong>Git 的管理，也不希望它们总出现在未跟踪文件列表。 通常都是些自动</strong></strong>生成的文件，比如日志文件，或者编译过程中创建的临时文件等。 在这种情况下，我们可以在工作目录中创建一个名为 .gitignore 的文件（文件名称固定），列出要忽略的文件模式。下面是一个示例：</strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/5050ed842b13511e64abf39697bfb30f.png" alt="5050ed842b13511e64abf39697bfb30f.png"></strong></p>
+<p><strong>5 分支</strong></p>
+<p><strong>5.1 查看本地分支</strong></p>
+<p>**  git branch**</p>
+<p><strong>5.2 创建本地分支</strong></p>
+<p>**  git branch 分支名**</p>
+<p><strong>5.3 切换分支</strong></p>
+<p>**  git checkout 分支名**</p>
+<p>**  还可以直接切换到一个不存在的分支(即创建并切换)**</p>
+<p>**  git checkout -b 分支名**</p>
+<p><strong>5.4 合并分支</strong></p>
+<p>**  一个分支上的提交commit可以合并到另外一个分支上面**</p>
+<p>**  git merge 分支名称(一般是将分支名称合并到执行git merge命令所在的分支上面)**</p>
+<p><strong>5.5 删除分支</strong></p>
+<p>**  git branch -d 分支名  删除分支时需要各种检查**</p>
+<p>**  git branch -D 分支名 不做任何检查，强制删除**</p>
+<p><strong>5.6 解决冲突</strong></p>
+<p>  当两个分支上对文件的修改可能会存在冲突，例如同时修改了同一个文件的同一行，这时就需要手动解</p>
+<p>决冲突，解决冲突步骤如下：</p>
+<p>  1. 处理文件中冲突的地方</p>
+<p>  2. 将解决完冲突的文件加入暂存区(add)</p>
+<p>  3. 提交到仓库(commit)</p>
+<p>冲突部分的内容处理如下所示：</p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/f624aa2581dded8781e409859eb9b68a.png" alt="f624aa2581dded8781e409859eb9b68a.png"></p>
+<p><strong>5.7 开发中分支使用的原则与流程</strong></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/28814da1a2980bfbfa8c965f950f1181.png" alt="28814da1a2980bfbfa8c965f950f1181.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/b36631d5466acd3335ec03680cfd3da8.png" alt="b36631d5466acd3335ec03680cfd3da8.png"></p>
+<p><strong>6 操作远程仓库</strong></p>
+<p><strong>6.1 添加远程仓库</strong></p>
+<p>**  这个操作先初始化本地库，然后和已经创建的远程库进行对接**</p>
+<p>**  git remote add &lt;远端名称&gt;  &lt;远端仓库路径&gt;**</p>
+<ul>
+<li><strong>远端名称：默认为origin，取决于远端服务器的设置</strong></li>
+<li><strong>远端仓库路径：从远端服务器获取URL</strong></li>
+<li><strong>例如：git remote add origin <a href="mailto:&#103;&#x69;&#x74;&#64;&#103;&#x69;&#116;&#101;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#103;&#x69;&#x74;&#64;&#103;&#x69;&#116;&#101;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>:czbk_zhang&#x2F;git_test.git</strong></li>
+</ul>
+<p><strong>6.2 查看远程仓库</strong></p>
+<p>**   git remote**</p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/6c4f659fa35169c052e444cb40486241.png" alt="6c4f659fa35169c052e444cb40486241.png"></strong></p>
+<p><strong>6.3 推送到远程仓库</strong></p>
+<p>**   命令：git push [-f] [--set-upstream] [远端名称 [本地分支名][：远端分支名]]**</p>
+<ul>
+<li><strong>git push origin master  如果本地分支名和远端分支名相同，则可以只写本地分支</strong></li>
+<li><strong>-f 表示强制覆盖</strong></li>
+<li><strong>--set-upstream  表示推送到远端的同时和远端分支建立起联系</strong></li>
+<li><strong>如果当前分支和远端分支关联，则可以省略分支名和远端名称 如</strong></li>
+</ul>
+<p><strong>6.4  查看本地分支和远程分支的关联关系</strong></p>
+<p>**   git branch -vv**</p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img60/e27c57dceed2d44e0712afc4d48e6fdb.png" alt="e27c57dceed2d44e0712afc4d48e6fdb.png"></strong></p>
+<p><strong>6.5 从远程仓库克隆</strong></p>
+<p>   <strong>如果已经有一个远端仓库，我们可以直接clone到本地</strong></p>
+<p>   <strong>git clone &lt;仓库路径&gt; [本地目录]</strong></p>
+<p>**   本地目录可以省略，会自动生成一个目录**</p>
+<p><strong>6.6 从远程仓库fetch和pull</strong></p>
+<p>   </p>
+<p>   <strong>远程分支和本地的分支一样，我们可以进行merge操作，只是需要先把远端仓库里的更新都下载到本****地(相当于在本地新创建了一个分支-远端分支)，再进行操作</strong></p>
+<ul>
+<li><strong>git fetch [remote name] [branch name]�</strong>�</li>
+<li><strong>指令就是将仓库里的更新都抓取到本地，不会进行合并，</strong></li>
+<li><strong>git pull [remote name] [branch name]</strong></li>
+<li><strong>指令就是将远端仓库的修改拉到本地并自动进行合并，等同于fetch+merge</strong></li>
+<li><strong>如果不指定远端名称和分支名，则抓取所有并更新当前分支</strong></li>
+</ul>
+<p>  </p>
+<p><strong>6.7 合并冲突</strong></p>
+<p>   <strong>在一段时间，A、B用户修改了同一个文件，且修改了同一行位置的代码，此时会发生合并冲突，<strong><strong>A用户在本地修改代码后优先推送到远程仓库，此时B用户在本地修订代码，提交到本地仓库后，也需要</strong></strong>推送到远程仓库，此时B用户晚于A用户，故需要先拉取远程仓库的提交，经过合并后才能推送到远端分****支。</strong></p>
+<p>   <strong>在B用户拉取代码时，因为A、B用户同一段时间修改了同一个文件的相同位置代码，故会发生合并冲<strong><strong>突，</strong></strong>远程分支也是分支，所以合并时冲突的解决方式也和解决本地分支冲突相同相同。</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/08/git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="cl2wu9hfc0010vcvj5k13basl" data-title="git的基本使用" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/" rel="tag">Git</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/08/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Java%E8%99%9A%E6%8B%9F%E6%9C%BA3-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%A7%E8%A1%8C%E5%AD%90%E7%B3%BB%E7%BB%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          深入理解Java虚拟机3---虚拟机执行子系统
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/08/%E5%85%B1%E4%BA%AB%E6%A8%A1%E5%9E%8B%E4%B9%8B%E4%B8%8D%E5%8F%AF%E5%8F%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">共享模型之不可变</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 18px;">多线程</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 14px;">计算机网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/08/HTTPS/">HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E8%BF%90%E8%BE%93%E5%B1%82/">运输层</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/DNS/">DNS</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E5%9B%BE%E8%A7%A3HTTP-1/">图解HTTP---1</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E7%BD%91%E7%BB%9C%E5%B1%82/">网络层-待更新</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

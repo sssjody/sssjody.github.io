@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>虚拟机执行子系统 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="类加载机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="虚拟机执行子系统">
+<meta property="og:url" content="http://example.com/2022/05/08/%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%A7%E8%A1%8C%E5%AD%90%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="类加载机制">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/5c03df987784407137c79e7a40c32e19.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/182216d08ec816cf1e39ced3c3d2afae.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/9d4c6a50cb8abfab13793c09c194574a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/5cbb1d49919225cc3a9630eea1dfd416.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/7e34478563826eac56c569b2e62061b5.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/768ecf13d73f36f385df4fc1ae551575.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/90260f94299d4b6424fa877e314df9f2.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/074a35d5dd218fef0853103abfadc39d.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/6861919d70c675acde82e3529a610390.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/d21c656729be61a8eac370e3a0bc6ace.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/743f69f8c0944c186fa3be34a9267f4a.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/f9f05860aebc383269f62377910a37bc.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/e1bbda5aa4679dd35c30a08a8fa01aa6.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/3ba6e6e27f1c6f0753dd5016adc68c86.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/6ec6c648365b862695541f03d54e2d18.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/bd83369cac63f91fc7241cee53757f8f.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/58621a004b17714573c6c0621ea6c051.png">
+<meta property="og:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/56b42f8efcea8521f96178385854b435.png">
+<meta property="article:published_time" content="2022-05-08T04:49:38.233Z">
+<meta property="article:modified_time" content="2022-05-08T04:50:06.720Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="jvm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/5c03df987784407137c79e7a40c32e19.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-虚拟机执行子系统" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/08/%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%A7%E8%A1%8C%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time class="dt-published" datetime="2022-05-08T04:49:38.233Z" itemprop="datePublished">2022-05-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      虚拟机执行子系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>类加载机制</strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/5c03df987784407137c79e7a40c32e19.png" alt="5c03df987784407137c79e7a40c32e19.png"></strong></p>
+<span id="more"></span>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/182216d08ec816cf1e39ced3c3d2afae.png" alt="182216d08ec816cf1e39ced3c3d2afae.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/9d4c6a50cb8abfab13793c09c194574a.png" alt="9d4c6a50cb8abfab13793c09c194574a.png"></strong></p>
+<ul>
+<li><strong>准备</strong></li>
+</ul>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/5cbb1d49919225cc3a9630eea1dfd416.png" alt="5cbb1d49919225cc3a9630eea1dfd416.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/7e34478563826eac56c569b2e62061b5.png" alt="7e34478563826eac56c569b2e62061b5.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/768ecf13d73f36f385df4fc1ae551575.png" alt="768ecf13d73f36f385df4fc1ae551575.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/90260f94299d4b6424fa877e314df9f2.png" alt="90260f94299d4b6424fa877e314df9f2.png"></strong></p>
+<ul>
+<li><strong>初始化</strong></li>
+</ul>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/074a35d5dd218fef0853103abfadc39d.png" alt="074a35d5dd218fef0853103abfadc39d.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/6861919d70c675acde82e3529a610390.png" alt="6861919d70c675acde82e3529a610390.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/d21c656729be61a8eac370e3a0bc6ace.png" alt="d21c656729be61a8eac370e3a0bc6ace.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/743f69f8c0944c186fa3be34a9267f4a.png" alt="743f69f8c0944c186fa3be34a9267f4a.png"></strong></p>
+<p><strong><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/f9f05860aebc383269f62377910a37bc.png" alt="f9f05860aebc383269f62377910a37bc.png"></strong></p>
+<p><strong>Java创建对象的过程</strong></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/e1bbda5aa4679dd35c30a08a8fa01aa6.png" alt="e1bbda5aa4679dd35c30a08a8fa01aa6.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/3ba6e6e27f1c6f0753dd5016adc68c86.png" alt="3ba6e6e27f1c6f0753dd5016adc68c86.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/6ec6c648365b862695541f03d54e2d18.png" alt="6ec6c648365b862695541f03d54e2d18.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/bd83369cac63f91fc7241cee53757f8f.png" alt="bd83369cac63f91fc7241cee53757f8f.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/58621a004b17714573c6c0621ea6c051.png" alt="58621a004b17714573c6c0621ea6c051.png"></p>
+<p><img src="https://sssjody.oss-cn-beijing.aliyuncs.com/img64/56b42f8efcea8521f96178385854b435.png" alt="56b42f8efcea8521f96178385854b435.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/05/08/%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%A7%E8%A1%8C%E5%AD%90%E7%B3%BB%E7%BB%9F/" data-id="cl2wu9hgw0035vcvj6bo4aj6z" data-title="虚拟机执行子系统" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/08/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          内存结构
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/08/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA1-java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">深入理解java虚拟机1---java内存区域</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/" rel="tag">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/jvm/" style="font-size: 12px;">jvm</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a> <a href="/tags/spring/" style="font-size: 16px;">spring</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 18px;">多线程</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 14px;">计算机网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/08/HTTPS/">HTTPS</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E8%BF%90%E8%BE%93%E5%B1%82/">运输层</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/DNS/">DNS</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E5%9B%BE%E8%A7%A3HTTP-1/">图解HTTP---1</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/%E7%BD%91%E7%BB%9C%E5%B1%82/">网络层-待更新</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
