@@ -4,19 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>Redis高级数据 | Hexo</title>
+  <title>aqs---独占锁的获取和释放 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Bitmaps Bitmaps类型的基本操作  获取指定key对应偏移量上的bit值  getbit key offset  设置指定key对应偏移量上的bit值，value只能是1或0  setbit key offset value">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Redis高级数据">
-<meta property="og:url" content="http://example.com/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="aqs---独占锁的获取和释放">
+<meta property="og:url" content="http://example.com/2021/08/23/aqs-%E7%8B%AC%E5%8D%A0%E9%94%81%E7%9A%84%E8%8E%B7%E5%8F%96%E5%92%8C%E9%87%8A%E6%94%BE/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Bitmaps Bitmaps类型的基本操作  获取指定key对应偏移量上的bit值  getbit key offset  设置指定key对应偏移量上的bit值，value只能是1或0  setbit key offset value">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-05-04T15:02:08.063Z">
-<meta property="article:modified_time" content="2022-05-04T15:04:39.258Z">
+<meta property="article:published_time" content="2021-08-23T08:40:00.000Z">
+<meta property="article:modified_time" content="2022-05-08T04:08:20.030Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="redis">
+<meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -74,10 +72,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-Redis高级数据" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-aqs-独占锁的获取和释放" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/" class="article-date">
-  <time class="dt-published" datetime="2022-05-04T15:02:08.063Z" itemprop="datePublished">2022-05-04</time>
+    <a href="/2021/08/23/aqs-%E7%8B%AC%E5%8D%A0%E9%94%81%E7%9A%84%E8%8E%B7%E5%8F%96%E5%92%8C%E9%87%8A%E6%94%BE/" class="article-date">
+  <time class="dt-published" datetime="2021-08-23T08:40:00.000Z" itemprop="datePublished">2021-08-23</time>
 </a>
     
   </div>
@@ -88,7 +86,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      Redis高级数据
+      aqs---独占锁的获取和释放
     </h1>
   
 
@@ -96,74 +94,24 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><strong>Bitmaps</strong></p>
-<p>Bitmaps类型的基本操作</p>
-<ul>
-<li><p>获取指定key对应偏移量上的bit值</p>
-</li>
-<li><p>getbit key offset</p>
-</li>
-<li><p>设置指定key对应偏移量上的bit值，value只能是1或0</p>
-</li>
-<li><p>setbit key offset value</p>
-<span id="more"></span>
-<p>Bitmaps类型的扩展操作</p>
-</li>
-<li><p>对指定key按位进行交，并，非，异或操作，并将结果保存到destkey里面</p>
-</li>
-<li><p>bitop op destkey key1 [key2…]</p>
-</li>
-<li><p>and 交  or 并  not 非  xor 异或</p>
-</li>
-<li><p>统计指定key中1的数量</p>
-</li>
-<li><p>bitcount key [start  end]</p>
-</li>
-</ul>
-<p><strong>HyperLogLog</strong></p>
-<p>基数是数据集去重后元素的个数</p>
-<p>HyperLogLog就是用来做基数统计的，运用了LogLog算法</p>
-<ul>
-<li>添加数据</li>
-<li>pfadd  key element [element …]</li>
-<li>统计数据</li>
-<li>pfcount key [key…]</li>
-<li>合并数据</li>
-<li>pfmerge  destkey sourcekey [sourcekey…]</li>
-</ul>
-<p>相关说明</p>
-<ul>
-<li>用于进行基数统计，不是集合，不保存数据，只记录数量而不是具体的数据</li>
-<li>核心是估算算法，最终数值存在一定误差</li>
-<li>误差范围：基数估计的结果是一个带有0.81%标准错误的近似值</li>
-<li>耗空间极小，每个hyperloglog key占用了12k的内存用于标记基数</li>
-<li>pfadd命令不是一次性分配12k内存使用，会随着基数的增加内存逐渐增大</li>
-<li>pfmerge命令合并后占用的存储空间为12k，无论合并之前数据量多少</li>
-</ul>
-<p><strong>GEO</strong></p>
-<ul>
-<li>添加坐标点</li>
-<li>geoadd key longitude latitude member [longitude latitude member…]</li>
-<li>获取坐标点</li>
-<li>geopos key member </li>
-<li>计算坐标点距离</li>
-<li>geodist key member1 member2 [unit]</li>
-<li>获取坐标点</li>
-<li>georadius key longitude latitude radius</li>
-<li>获取坐标点</li>
-<li>georadiusbymember  key member radius</li>
-<li>计算hash</li>
-<li>geohash key member</li>
-</ul>
+        <span id="more"></span>
+
+
+	<div class="row">
+    <embed src="pdf/aqs-独占锁的获取和释放.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/04/Redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE/" data-id="cl2ws01q3000dm8vjb8ii101f" data-title="Redis高级数据" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/08/23/aqs-%E7%8B%AC%E5%8D%A0%E9%94%81%E7%9A%84%E8%8E%B7%E5%8F%96%E5%92%8C%E9%87%8A%E6%94%BE/" data-id="cl2ws01qi000sm8vj5g5dgj8d" data-title="aqs---独占锁的获取和释放" class="article-share-link">Share</a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li></ul>
 
     </footer>
   </div>
@@ -171,20 +119,15 @@
     
 <nav id="article-nav">
   
-    <a href="/2022/05/05/Maven%E5%9F%BA%E7%A1%80/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/08/23/aqs-%E5%85%B1%E4%BA%AB%E9%94%81%E7%9A%84%E8%8E%B7%E5%8F%96%E5%92%8C%E9%87%8A%E6%94%BE/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Maven基础
+          aqs---共享锁的获取和释放
         
       </div>
     </a>
   
-  
-    <a href="/2022/05/04/Redis%E5%88%A0%E9%99%A4%E8%BF%87%E6%9C%9F%E9%94%AE/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Redis删除过期键</div>
-    </a>
   
 </nav>
 
